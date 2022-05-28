@@ -92,6 +92,7 @@ import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.Random;
 import java.util.TreeSet;
 
@@ -539,96 +540,102 @@ public class Map implements Runnable, IMap {
     }
 
     public void calculateCurrentLightAndSkyColor() {
-        if (this.world != null) {
-            if (this.needLightmapRefresh && TickCounter.tickCounter != this.tickWithLightChange && !this.game.isPaused() || this.options.realTimeTorches) {
-                GLUtils.disp(this.lightmapTexture.getGlId());
-                ByteBuffer byteBuffer = ByteBuffer.allocateDirect(1024).order(ByteOrder.nativeOrder());
-                GLShim.glGetTexImage(3553, 0, 6408, 5121, byteBuffer);
+        try {
+            if (this.world != null) {
+                if (this.needLightmapRefresh && TickCounter.tickCounter != this.tickWithLightChange && !this.game.isPaused() || this.options.realTimeTorches) {
+                    GLUtils.disp(this.lightmapTexture.getGlId());
+                    ByteBuffer byteBuffer = ByteBuffer.allocateDirect(1024).order(ByteOrder.nativeOrder());
+                    GLShim.glGetTexImage(3553, 0, 6408, 5121, byteBuffer);
 
-                for (int i = 0; i < this.lightmapColors.length; ++i) {
-                    int index = i * 4;
-                    this.lightmapColors[i] = (byteBuffer.get(index + 3) << 24) + (byteBuffer.get(index) << 16) + (byteBuffer.get(index + 1) << 8) + (byteBuffer.get(index + 2) << 0);
+                    for (int i = 0; i < this.lightmapColors.length; ++i) {
+                        int index = i * 4;
+                        this.lightmapColors[i] = (byteBuffer.get(index + 3) << 24) + (byteBuffer.get(index) << 16) + (byteBuffer.get(index + 1) << 8) + (byteBuffer.get(index + 2) << 0);
+                    }
+
+                    if (this.lightmapColors[255] != 0) {
+                        this.needLightmapRefresh = false;
+                    }
                 }
 
-                if (this.lightmapColors[255] != 0) {
-                    this.needLightmapRefresh = false;
-                }
-            }
-
-            boolean lightChanged = false;
-            if (this.game.options.gamma != this.lastGamma) {
-                lightChanged = true;
-                this.lastGamma = this.game.options.gamma;
-            }
-
-            float[] providerLightBrightnessTable = new float[16];
-
-            for (int t = 0; t < 16; ++t) {
-                providerLightBrightnessTable[t] = this.world.getDimension().getBrightness(t);
-            }
-
-            for (int t = 0; t < 16; ++t) {
-                if (providerLightBrightnessTable[t] != this.lastLightBrightnessTable[t]) {
+                boolean lightChanged = false;
+                if (this.game.options.gamma != this.lastGamma) {
                     lightChanged = true;
-                    this.lastLightBrightnessTable[t] = providerLightBrightnessTable[t];
+                    this.lastGamma = this.game.options.gamma;
                 }
-            }
 
-            float sunBrightness = this.world.getStarBrightness(1.0F);
-            if ((double) Math.abs(this.lastSunBrightness - sunBrightness) > 0.01 || (double) sunBrightness == 1.0 && sunBrightness != this.lastSunBrightness || (double) sunBrightness == 0.0 && sunBrightness != this.lastSunBrightness) {
-                lightChanged = true;
-                this.needSkyColor = true;
-                this.lastSunBrightness = sunBrightness;
-            }
+                float[] providerLightBrightnessTable = new float[16];
 
-            float potionEffect = 0.0F;
-            if (this.game.player.hasStatusEffect(StatusEffects.NIGHT_VISION)) {
-                int duration = this.game.player.getStatusEffect(StatusEffects.NIGHT_VISION).getDuration();
-                potionEffect = duration > 200 ? 1.0F : 0.7F + MathHelper.sin(((float) duration - 1.0F) * (float) Math.PI * 0.2F) * 0.3F;
-            }
+                for (int t = 0; t < 16; ++t) {
+                    providerLightBrightnessTable[t] = this.world.getDimension().getBrightness(t);
+                }
 
-            if (this.lastPotion != potionEffect) {
-                this.lastPotion = potionEffect;
-                lightChanged = true;
-            }
+                for (int t = 0; t < 16; ++t) {
+                    if (providerLightBrightnessTable[t] != this.lastLightBrightnessTable[t]) {
+                        lightChanged = true;
+                        this.lastLightBrightnessTable[t] = providerLightBrightnessTable[t];
+                    }
+                }
 
-            int lastLightningBolt = this.world.getLightningTicksLeft();
-            if (this.lastLightning != (float) lastLightningBolt) {
-                this.lastLightning = (float) lastLightningBolt;
-                lightChanged = true;
-            }
+                float sunBrightness = this.world.getStarBrightness(1.0F);
+                if ((double) Math.abs(this.lastSunBrightness - sunBrightness) > 0.01 || (double) sunBrightness == 1.0 && sunBrightness != this.lastSunBrightness || (double) sunBrightness == 0.0 && sunBrightness != this.lastSunBrightness) {
+                    lightChanged = true;
+                    this.needSkyColor = true;
+                    this.lastSunBrightness = sunBrightness;
+                }
 
-            if (this.lastPaused != this.game.isPaused()) {
-                this.lastPaused = !this.lastPaused;
-                lightChanged = true;
-            }
+                float potionEffect = 0.0F;
+                if (this.game.player != null) {
+                    if (this.game.player.hasStatusEffect(StatusEffects.NIGHT_VISION)) {
+                        int duration = this.game.player.getStatusEffect(StatusEffects.NIGHT_VISION).getDuration();
+                        potionEffect = duration > 200 ? 1.0F : 0.7F + MathHelper.sin(((float) duration - 1.0F) * (float) Math.PI * 0.2F) * 0.3F;
+                    }
+                }
 
-            boolean scheduledUpdate = (this.timer - 50) % (this.lastLightBrightnessTable[0] == 0.0F ? 250 : 2000) == 0;
-            if (lightChanged || scheduledUpdate) {
-                this.tickWithLightChange = TickCounter.tickCounter;
-                lightChanged = false;
-                this.needLightmapRefresh = true;
-            }
+                if (this.lastPotion != potionEffect) {
+                    this.lastPotion = potionEffect;
+                    lightChanged = true;
+                }
 
-            boolean aboveHorizon = this.game.player.getCameraPosVec(0.0F).y >= this.world.getLevelProperties().getSkyDarknessHeight(this.world);
-            if (this.world.getRegistryKey().getValue().toString().toLowerCase().contains("ether")) {
-                aboveHorizon = true;
-            }
+                int lastLightningBolt = this.world.getLightningTicksLeft();
+                if (this.lastLightning != (float) lastLightningBolt) {
+                    this.lastLightning = (float) lastLightningBolt;
+                    lightChanged = true;
+                }
 
-            if (aboveHorizon != this.lastAboveHorizon) {
-                this.needSkyColor = true;
-                this.lastAboveHorizon = aboveHorizon;
-            }
+                if (this.lastPaused != this.game.isPaused()) {
+                    this.lastPaused = !this.lastPaused;
+                    lightChanged = true;
+                }
 
-            int biomeID = this.world.getRegistryManager().get(Registry.BIOME_KEY).getRawId(this.world.getBiome(this.blockPos.withXYZ(GameVariableAccessShim.xCoord(), GameVariableAccessShim.yCoord(), GameVariableAccessShim.zCoord())).value());
-            if (biomeID != this.lastBiome) {
-                this.needSkyColor = true;
-                this.lastBiome = biomeID;
-            }
+                boolean scheduledUpdate = (this.timer - 50) % (this.lastLightBrightnessTable[0] == 0.0F ? 250 : 2000) == 0;
+                if (lightChanged || scheduledUpdate) {
+                    this.tickWithLightChange = TickCounter.tickCounter;
+                    lightChanged = false;
+                    this.needLightmapRefresh = true;
+                }
 
-            if (this.needSkyColor || scheduledUpdate) {
-                this.colorManager.setSkyColor(this.getSkyColor());
+                boolean aboveHorizon = this.game.player.getCameraPosVec(0.0F).y >= this.world.getLevelProperties().getSkyDarknessHeight(this.world);
+                if (this.world.getRegistryKey().getValue().toString().toLowerCase().contains("ether")) {
+                    aboveHorizon = true;
+                }
+
+                if (aboveHorizon != this.lastAboveHorizon) {
+                    this.needSkyColor = true;
+                    this.lastAboveHorizon = aboveHorizon;
+                }
+
+                int biomeID = this.world.getRegistryManager().get(Registry.BIOME_KEY).getRawId(this.world.getBiome(this.blockPos.withXYZ(GameVariableAccessShim.xCoord(), GameVariableAccessShim.yCoord(), GameVariableAccessShim.zCoord())).value());
+                if (biomeID != this.lastBiome) {
+                    this.needSkyColor = true;
+                    this.lastBiome = biomeID;
+                }
+
+                if (this.needSkyColor || scheduledUpdate) {
+                    this.colorManager.setSkyColor(this.getSkyColor());
+                }
+
             }
+        } catch (NullPointerException ignore) {
 
         }
     }
