@@ -2045,8 +2045,20 @@ public class Map implements Runnable, IChangeObserver {
             if (heading > 360) {
                 heading -= 360;
             }
+            String ns = "";
+            String ew = "";
+            if (heading > 360 - 60 || heading <= 60) {
+                ns = "N";
+            } else if (heading > 180 - 60 && heading <= 180 + 60) {
+                ns = "S";
+            }
+            if (heading > 90 - 60 && heading <= 90 + 60) {
+                ew = "E";
+            } else if (heading > 270 - 60 && heading <= 270 + 60) {
+                ew = "W";
+            }
 
-            String stats = "(" + this.dCoord(GameVariableAccessShim.xCoord()) + ", " + GameVariableAccessShim.yCoord() + ", " + this.dCoord(GameVariableAccessShim.zCoord()) + ") " + heading + "'";
+            String stats = "(" + this.dCoord(GameVariableAccessShim.xCoord()) + ", " + GameVariableAccessShim.yCoord() + ", " + this.dCoord(GameVariableAccessShim.zCoord()) + ") " + heading + "' " + ns + ew;
             int m = this.chkLen(stats) / 2;
             this.write(matrixStack, stats, (this.scWidth / 2 - m), 5.0F, 16777215);
             if (this.ztimer > 0) {
