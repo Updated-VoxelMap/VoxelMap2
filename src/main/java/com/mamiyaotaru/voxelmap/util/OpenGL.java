@@ -212,8 +212,8 @@ public final class OpenGL {
             ByteBuffer buffer = BufferUtils.createByteBuffer(4 * width * height);
 
             glBindFramebuffer(GL30_GL_FRAMEBUFFER, fboId);
-            glTexParameteri(GL11_GL_TEXTURE_2D, GL11_GL_TEXTURE_WRAP_S, GL11_GL_CLAMP);
-            glTexParameterf(GL11_GL_TEXTURE_2D, GL11_GL_TEXTURE_WRAP_T, GL11_GL_CLAMP);
+            //glTexParameteri(GL11_GL_TEXTURE_2D, GL11_GL_TEXTURE_WRAP_S, GL11_GL_CLAMP);
+            //glTexParameterf(GL11_GL_TEXTURE_2D, GL11_GL_TEXTURE_WRAP_T, GL11_GL_CLAMP);
             glTexParameterf(GL11_GL_TEXTURE_2D, GL11_GL_TEXTURE_MIN_FILTER, GL11_GL_LINEAR);
             glTexParameterf(GL11_GL_TEXTURE_2D, GL11_GL_TEXTURE_MAG_FILTER, GL11_GL_LINEAR);
             glTexImage2D(GL11_GL_TEXTURE_2D, 0, GL11_GL_RGBA, width, height, 0, GL11_GL_RGBA, GL11_GL_BYTE, buffer);
