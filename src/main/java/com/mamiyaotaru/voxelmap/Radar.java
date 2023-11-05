@@ -520,7 +520,7 @@ public class Radar implements IRadar {
                 this.renderMapMobs(drawContext, matrixStack, this.layoutVariables.mapX, this.layoutVariables.mapY);
             }
 
-            OpenGL.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
         }
     }
@@ -1241,10 +1241,10 @@ public class Radar implements IRadar {
         OpenGL.glEnable(OpenGL.GL11_GL_DEPTH_TEST);
         OpenGL.glEnable(OpenGL.GL11_GL_BLEND);
         OpenGL.glDisable(OpenGL.GL11_GL_CULL_FACE);
-        OpenGL.glClearColor(1.0F, 1.0F, 1.0F, 0.0F);
-        OpenGL.glClearDepth(1.0);
-        OpenGL.glClear(OpenGL.GL11_GL_COLOR_BUFFER_BIT | OpenGL.GL11_GL_DEPTH_BUFFER_BIT);
-        OpenGL.glBlendFunc(OpenGL.GL11_GL_SRC_ALPHA, OpenGL.GL11_GL_ONE_MINUS_SRC_ALPHA);
+        RenderSystem.clearColor(1.0F, 1.0F, 1.0F, 0.0F);
+        RenderSystem.clearDepth(1.0);
+        RenderSystem.clear(OpenGL.GL11_GL_COLOR_BUFFER_BIT | OpenGL.GL11_GL_DEPTH_BUFFER_BIT, false);
+        RenderSystem.blendFunc(OpenGL.GL11_GL_SRC_ALPHA, OpenGL.GL11_GL_ONE_MINUS_SRC_ALPHA);
         matrixStack.push();
         matrixStack.translate(width / 2f, height / 2f, 0.0);
         matrixStack.scale(size, size, size);
@@ -1611,7 +1611,7 @@ public class Radar implements IRadar {
             RenderSystem.setShader(GameRenderer::getPositionTexProgram);
             OpenGL.Utils.disp2(this.textureAtlas.getGlId());
             OpenGL.glEnable(OpenGL.GL11_GL_BLEND);
-            OpenGL.glBlendFunc(OpenGL.GL11_GL_SRC_ALPHA, OpenGL.GL11_GL_ONE_MINUS_SRC_ALPHA);
+            RenderSystem.blendFunc(OpenGL.GL11_GL_SRC_ALPHA, OpenGL.GL11_GL_ONE_MINUS_SRC_ALPHA);
 
             RenderSystem.setShader(GameRenderer::getPositionTexProgram);
             contact.updateLocation();
@@ -1627,9 +1627,9 @@ public class Radar implements IRadar {
             contact.angle = (float) Math.toDegrees(Math.atan2(wayX, wayZ));
             contact.distance = Math.sqrt(wayX * wayX + wayZ * wayZ) / this.layoutVariables.zoomScaleAdjusted;
             if (wayY < 0) {
-                OpenGL.glColor4f(1.0F, 1.0F, 1.0F, contact.brightness);
+                RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, contact.brightness);
             } else {
-                OpenGL.glColor3f(contact.brightness, contact.brightness, contact.brightness);
+                RenderSystem.setShaderColor(contact.brightness, contact.brightness, contact.brightness, 1.0f);
             }
 
             if (this.minimapOptions.rotates) {
@@ -1749,9 +1749,9 @@ public class Radar implements IRadar {
                             }
 
                             if (wayY < 0) {
-                                OpenGL.glColor4f(red, green, blue, contact.brightness);
+                                RenderSystem.setShaderColor(red, green, blue, contact.brightness);
                             } else {
-                                OpenGL.glColor3f(red * contact.brightness, green * contact.brightness, blue * contact.brightness);
+                                RenderSystem.setShaderColor(red * contact.brightness, green * contact.brightness, blue * contact.brightness, 1.0f);
                             }
                         }
 
@@ -1761,9 +1761,9 @@ public class Radar implements IRadar {
                         OpenGL.Utils.drawPost();
                         if (icon == this.clothIcon) {
                             if (wayY < 0) {
-                                OpenGL.glColor4f(1.0F, 1.0F, 1.0F, contact.brightness);
+                                RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, contact.brightness);
                             } else {
-                                OpenGL.glColor3f(contact.brightness, contact.brightness, contact.brightness);
+                                RenderSystem.setShaderColor(contact.brightness, contact.brightness, contact.brightness, 1.0f);
                             }
 
                             icon = this.textureAtlas.getAtlasSprite("armor " + this.armorNames[2]);
@@ -1772,9 +1772,9 @@ public class Radar implements IRadar {
                             OpenGL.Utils.setMap(icon, x, y + yOffset + armorOffset, icon.getIconWidth() / 4.0F * armorScale);
                             OpenGL.Utils.drawPost();
                             if (wayY < 0) {
-                                OpenGL.glColor4f(red, green, blue, contact.brightness);
+                                RenderSystem.setShaderColor(red, green, blue, contact.brightness);
                             } else {
-                                OpenGL.glColor3f(red * contact.brightness, green * contact.brightness, blue * contact.brightness);
+                                RenderSystem.setShaderColor(red * contact.brightness, green * contact.brightness, blue * contact.brightness, 1.0f);
                             }
 
                             icon = this.textureAtlas.getAtlasSprite("armor " + this.armorNames[1]);
@@ -1782,7 +1782,7 @@ public class Radar implements IRadar {
                             OpenGL.Utils.drawPre();
                             OpenGL.Utils.setMap(icon, x, y + yOffset + armorOffset, icon.getIconWidth() / 4.0F * armorScale * 40.0F / 37.0F);
                             OpenGL.Utils.drawPost();
-                            OpenGL.glColor3f(1.0F, 1.0F, 1.0F);
+                            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0f);
                             icon = this.textureAtlas.getAtlasSprite("armor " + this.armorNames[3]);
                             this.applyFilteringParameters();
                             OpenGL.Utils.drawPre();

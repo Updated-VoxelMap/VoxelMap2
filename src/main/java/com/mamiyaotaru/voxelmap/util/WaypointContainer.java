@@ -64,7 +64,7 @@ public class WaypointContainer {
             OpenGL.glEnable(OpenGL.GL11_GL_DEPTH_TEST);
             OpenGL.glDepthMask(false);
             OpenGL.glEnable(OpenGL.GL11_GL_BLEND);
-            OpenGL.glBlendFunc(OpenGL.GL11_GL_SRC_ALPHA, 1);
+            RenderSystem.blendFunc(OpenGL.GL11_GL_SRC_ALPHA, 1);
             RenderSystem.setShader(GameRenderer::getPositionColorProgram);
             Matrix4f matrix4f = matrixStack.peek().getPositionMatrix();
 
@@ -86,7 +86,7 @@ public class WaypointContainer {
 
         if (this.options.showWaypoints && signs) {
             OpenGL.glEnable(OpenGL.GL11_GL_BLEND);
-            OpenGL.glBlendFuncSeparate(OpenGL.GL11_GL_SRC_ALPHA, OpenGL.GL11_GL_ONE_MINUS_SRC_ALPHA, 1, OpenGL.GL11_GL_ONE_MINUS_SRC_ALPHA);
+            RenderSystem.blendFuncSeparate(OpenGL.GL11_GL_SRC_ALPHA, OpenGL.GL11_GL_ONE_MINUS_SRC_ALPHA, 1, OpenGL.GL11_GL_ONE_MINUS_SRC_ALPHA);
 
             for (Waypoint pt : this.wayPts) {
                 if (pt.isActive() || pt == this.highlightedWaypoint) {
@@ -303,7 +303,7 @@ public class WaypointContainer {
             OpenGL.glEnable(OpenGL.GL11_GL_BLEND);
         }
 
-        OpenGL.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         matrixStack.pop();
     }
 }

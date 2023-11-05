@@ -132,8 +132,8 @@ public class ImageUtils {
             for (int startX = 0; startX + fboWidth < imageWidth; startX += fboWidth) {
                 for (int startY = 0; startY + fboWidth < imageHeight; startY += fboHeight) {
                     OpenGL.Utils.disp(glid);
-                    OpenGL.glClearColor(0.0F, 0.0F, 0.0F, 0.0F);
-                    OpenGL.glClear(OpenGL.GL11_GL_COLOR_BUFFER_BIT | OpenGL.GL11_GL_DEPTH_BUFFER_BIT);
+                    RenderSystem.clearColor(0.0F, 0.0F, 0.0F, 0.0F);
+                    RenderSystem.clear(OpenGL.GL11_GL_COLOR_BUFFER_BIT | OpenGL.GL11_GL_DEPTH_BUFFER_BIT, false);
                     OpenGL.Utils.drawPre();
                     OpenGL.Utils.ldrawthree(0.0, fboHeight, 1.0, (float) startX / imageWidth, (float) startY / imageHeight);
                     OpenGL.Utils.ldrawthree(fboWidth, fboHeight, 1.0, ((float) startX + fboWidth) / imageWidth, (float) startY / imageHeight);

@@ -5,6 +5,7 @@ import com.mamiyaotaru.voxelmap.gui.overridden.GuiSlotMinimap;
 import com.mamiyaotaru.voxelmap.util.DimensionContainer;
 import com.mamiyaotaru.voxelmap.util.DimensionManager;
 import com.mamiyaotaru.voxelmap.util.OpenGL;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.widget.EntryListWidget;
 import net.minecraft.client.util.NarratorManager;
@@ -86,7 +87,7 @@ class GuiSlotDimensions extends GuiSlotMinimap {
                 GuiAddWaypoint.setTooltip(this.parentGui, tooltip);
             }
 
-            OpenGL.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
             OpenGL.Utils.img2("textures/gui/container/beacon.png");
             int xOffset = this.parentGui.waypoint.dimensions.contains(this.dim) ? 91 : 113;
             int yOffset = 222;

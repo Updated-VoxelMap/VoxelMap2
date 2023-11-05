@@ -31,6 +31,7 @@ public final class OpenGL {
             GL11_GL_ALWAYS               = 0x207,
             GL11_GL_SRC_ALPHA            = 0x302,
             GL11_GL_ONE_MINUS_SRC_ALPHA  = 0x303,
+            GL11_GL_DST_COLOR            = 0x306,
             GL11_GL_CULL_FACE            = 0xB44,
             GL11_GL_DEPTH_TEST           = 0xB71,
             GL11_GL_BLEND                = 0xBE2,
@@ -105,20 +106,6 @@ public final class OpenGL {
             default -> VoxelConstants.getLogger().warn("OpenGL - Invalid state received by Disable (" + target + ")");
         }
     }
-
-    public static void glBlendFunc(int srcFactor, int dstFactor) { RenderSystem.blendFunc(srcFactor, dstFactor); }
-
-    public static void glBlendFuncSeparate(int srcFactorRGB, int dstFactorRGB, int srcFactorAlpha, int dstFactorAlpha) { RenderSystem.blendFuncSeparate(srcFactorRGB, dstFactorRGB, srcFactorAlpha, dstFactorAlpha); }
-
-    public static void glClear(int mask) { RenderSystem.clear(mask, VoxelConstants.isSystemMacOS()); }
-
-    public static void glClearColor(float red, float green, float blue, float alpha) { RenderSystem.clearColor(red, green, blue, alpha); }
-
-    public static void glClearDepth(double depth) { RenderSystem.clearDepth(depth); }
-
-    public static void glColor3f(float red, float green, float blue) { glColor4f(red, green, blue, 1.0f); }
-
-    public static void glColor4f(float red, float green, float blue, float alpha) { RenderSystem.setShaderColor(red, green, blue, alpha); }
 
     public static void glDeleteTexture(int texture) { RenderSystem.deleteTexture(texture); }
 

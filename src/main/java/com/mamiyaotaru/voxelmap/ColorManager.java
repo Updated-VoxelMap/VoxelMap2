@@ -260,12 +260,12 @@ public class ColorManager {
         OpenGL.glEnable(OpenGL.GL11_GL_DEPTH_TEST);
         OpenGL.glEnable(OpenGL.GL11_GL_BLEND);
         OpenGL.glDisable(OpenGL.GL11_GL_CULL_FACE);
-        OpenGL.glBlendFunc(OpenGL.GL11_GL_SRC_ALPHA, OpenGL.GL11_GL_ONE_MINUS_SRC_ALPHA);
-        OpenGL.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        OpenGL.glClearColor(1.0F, 1.0F, 1.0F, 0.0F);
-        OpenGL.glClearDepth(1.0);
-        OpenGL.glClear(OpenGL.GL11_GL_COLOR_BUFFER_BIT | OpenGL.GL11_GL_DEPTH_BUFFER_BIT);
-        OpenGL.glBlendFunc(OpenGL.GL11_GL_SRC_ALPHA, OpenGL.GL11_GL_ONE_MINUS_SRC_ALPHA);
+        RenderSystem.blendFunc(OpenGL.GL11_GL_SRC_ALPHA, OpenGL.GL11_GL_ONE_MINUS_SRC_ALPHA);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.clearColor(1.0F, 1.0F, 1.0F, 0.0F);
+        RenderSystem.clearDepth(1.0);
+        RenderSystem.clear(OpenGL.GL11_GL_COLOR_BUFFER_BIT | OpenGL.GL11_GL_DEPTH_BUFFER_BIT, false);
+        RenderSystem.blendFunc(OpenGL.GL11_GL_SRC_ALPHA, OpenGL.GL11_GL_ONE_MINUS_SRC_ALPHA);
         matrixStack.push();
         matrixStack.translate((width / 2f) - size / 2.0F + transX, (height / 2f) - size / 2.0F + transY, 0.0F + transZ);
         matrixStack.scale(size, size, size);

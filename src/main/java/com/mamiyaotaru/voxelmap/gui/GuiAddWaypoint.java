@@ -291,7 +291,7 @@ public class GuiAddWaypoint extends GuiScreenMinimap implements IPopupGuiScreen 
         this.waypointY.render(drawContext, mouseX, mouseY, delta);
         int buttonListY = this.getHeight() / 6 + 82 + 6;
         super.render(drawContext, mouseX, mouseY, delta);
-        OpenGL.glColor4f(this.waypoint.red, this.waypoint.green, this.waypoint.blue, 1.0F);
+        RenderSystem.setShaderColor(this.waypoint.red, this.waypoint.green, this.waypoint.blue, 1.0F);
         RenderSystem.setShader(GameRenderer::getPositionTexColorProgram);
         RenderSystem.setShaderTexture(0, this.blank);
         drawContext.drawTexture(this.blank, this.getWidth() / 2 - 25, buttonListY + 24 + 5, 0, 0, 16, 10);
@@ -306,7 +306,7 @@ public class GuiAddWaypoint extends GuiScreenMinimap implements IPopupGuiScreen 
         }
 
         if (this.choosingColor) {
-            OpenGL.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
             OpenGL.Utils.img2(this.pickerResourceLocation);
             OpenGL.glTexParameteri(OpenGL.GL11_GL_TEXTURE_2D, OpenGL.GL11_GL_TEXTURE_MIN_FILTER, OpenGL.GL11_GL_NEAREST);
             RenderSystem.disableDepthTest();
@@ -336,11 +336,11 @@ public class GuiAddWaypoint extends GuiScreenMinimap implements IPopupGuiScreen 
             RenderSystem.setShader(GameRenderer::getPositionTexColorProgram);
             RenderSystem.setShaderTexture(0, this.blank);
             OpenGL.glTexParameteri(OpenGL.GL11_GL_TEXTURE_2D, OpenGL.GL11_GL_TEXTURE_MIN_FILTER, OpenGL.GL11_GL_NEAREST);
-            OpenGL.glColor4f(0.0F, 0.0F, 0.0F, 1.0F);
+            RenderSystem.setShaderColor(0.0F, 0.0F, 0.0F, 1.0F);
             drawContext.drawTexture(blank, this.getWidth() / 2 - displayWidth / 2 - 1, this.getHeight() / 2 - displayHeight / 2 - 1, 0, 0, displayWidth + 2, displayHeight + 2);
-            OpenGL.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
             drawContext.drawTexture(blank, this.getWidth() / 2 - displayWidth / 2, this.getHeight() / 2 - displayHeight / 2, 0, 0, displayWidth, displayHeight);
-            OpenGL.glColor4f(this.waypoint.red, this.waypoint.green, this.waypoint.blue, 1.0F);
+            RenderSystem.setShaderColor(this.waypoint.red, this.waypoint.green, this.waypoint.blue, 1.0F);
             OpenGL.glEnable(OpenGL.GL11_GL_BLEND);
             RenderSystem.setShader(GameRenderer::getPositionTexProgram);
             OpenGL.Utils.disp2(chooser.getGlId());

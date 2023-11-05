@@ -673,8 +673,8 @@ public class Map implements Runnable, IChangeObserver {
         }
 
         OpenGL.glEnable(OpenGL.GL11_GL_BLEND);
-        OpenGL.glBlendFunc(OpenGL.GL11_GL_SRC_ALPHA, 0);
-        OpenGL.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.blendFunc(OpenGL.GL11_GL_SRC_ALPHA, 0);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         if (!this.options.hide) {
             if (this.fullscreenMap) {
                 this.renderMapFull(drawContext, this.scWidth, this.scHeight);
@@ -706,12 +706,12 @@ public class Map implements Runnable, IChangeObserver {
 
         OpenGL.glDepthMask(true);
         OpenGL.glEnable(OpenGL.GL11_GL_DEPTH_TEST);
-        OpenGL.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         modelViewMatrixStack.pop();
         RenderSystem.restoreProjectionMatrix();
         RenderSystem.applyModelViewMatrix();
         OpenGL.glDisable(OpenGL.GL11_GL_DEPTH_TEST);
-        OpenGL.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         VoxelConstants.getMinecraft().textRenderer.getClass();
@@ -724,7 +724,7 @@ public class Map implements Runnable, IChangeObserver {
 
         OpenGL.glDepthMask(true);
         OpenGL.glEnable(OpenGL.GL11_GL_DEPTH_TEST);
-        OpenGL.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         OpenGL.glTexParameteri(OpenGL.GL11_GL_TEXTURE_2D, OpenGL.GL11_GL_TEXTURE_MIN_FILTER, OpenGL.GL11_GL_NEAREST);
         OpenGL.glTexParameteri(OpenGL.GL11_GL_TEXTURE_2D, OpenGL.GL11_GL_TEXTURE_MAG_FILTER, OpenGL.GL11_GL_NEAREST);
     }
@@ -1556,9 +1556,9 @@ public class Map implements Runnable, IChangeObserver {
         RenderSystem.applyModelViewMatrix();
         OpenGL.glDepthMask(false);
         OpenGL.glDisable(OpenGL.GL11_GL_DEPTH_TEST);
-        OpenGL.glClearColor(0.0F, 0.0F, 0.0F, 0.0F);
-        OpenGL.glClear(16384);
-        OpenGL.glBlendFunc(OpenGL.GL11_GL_SRC_ALPHA, 0);
+        RenderSystem.clearColor(0.0F, 0.0F, 0.0F, 0.0F);
+        RenderSystem.clear(OpenGL.GL11_GL_COLOR_BUFFER_BIT, false);
+        RenderSystem.blendFunc(OpenGL.GL11_GL_SRC_ALPHA, 0);
         OpenGL.Utils.img2(this.options.squareMap ? this.squareStencil : this.circleStencil);
         OpenGL.Utils.drawPre();
         OpenGL.Utils.ldrawthree(256.0F - 256.0F / scale, 256.0F + 256.0F / scale, 1.0, 0.0F, 0.0F);
@@ -1568,7 +1568,7 @@ public class Map implements Runnable, IChangeObserver {
         BufferBuilder bb = Tessellator.getInstance().getBuffer();
         //BufferRenderer.drawWithShader(bb.end());
         BufferRenderer.drawWithGlobalProgram(bb.end());
-        OpenGL.glBlendFuncSeparate(1, 0, 774, 0);
+        RenderSystem.blendFuncSeparate(1, 0, OpenGL.GL11_GL_DST_COLOR, 0);
         synchronized (this.coordinateLock) {
             if (this.imageChanged) {
                 this.imageChanged = false;
@@ -1612,7 +1612,7 @@ public class Map implements Runnable, IChangeObserver {
         matrixStack.pop();
         RenderSystem.setProjectionMatrix(minimapProjectionMatrix, VertexSorter.BY_DISTANCE);
         matrixStack.push();
-        OpenGL.glBlendFunc(OpenGL.GL11_GL_SRC_ALPHA, 0);
+        RenderSystem.blendFunc(OpenGL.GL11_GL_SRC_ALPHA, 0);
         OpenGL.Utils.disp2(OpenGL.Utils.fboTextureId);
 
         double guiScale = (double) VoxelConstants.getMinecraft().getWindow().getFramebufferWidth() / this.scWidth;
@@ -1624,8 +1624,8 @@ public class Map implements Runnable, IChangeObserver {
         OpenGL.glDisable(3089);
         matrixStack.pop();
         RenderSystem.applyModelViewMatrix();
-        OpenGL.glBlendFunc(OpenGL.GL11_GL_SRC_ALPHA, OpenGL.GL11_GL_ONE_MINUS_SRC_ALPHA);
-        OpenGL.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.blendFunc(OpenGL.GL11_GL_SRC_ALPHA, OpenGL.GL11_GL_ONE_MINUS_SRC_ALPHA);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         if (this.options.squareMap) {
             this.drawSquareMapFrame(x, y);
         } else {
@@ -1637,7 +1637,7 @@ public class Map implements Runnable, IChangeObserver {
         TextureAtlas textureAtlas = VoxelConstants.getVoxelMapInstance().getWaypointManager().getTextureAtlas();
         OpenGL.Utils.disp2(textureAtlas.getGlId());
         OpenGL.glEnable(OpenGL.GL11_GL_BLEND);
-        OpenGL.glBlendFunc(OpenGL.GL11_GL_SRC_ALPHA, OpenGL.GL11_GL_ONE_MINUS_SRC_ALPHA);
+        RenderSystem.blendFunc(OpenGL.GL11_GL_SRC_ALPHA, OpenGL.GL11_GL_ONE_MINUS_SRC_ALPHA);
         OpenGL.glDisable(OpenGL.GL11_GL_DEPTH_TEST);
         Waypoint highlightedPoint = this.waypointManager.getHighlightedWaypoint();
 
@@ -1654,7 +1654,7 @@ public class Map implements Runnable, IChangeObserver {
             this.drawWaypoint(matrixStack, highlightedPoint, textureAtlas, x, y, scScale, lastXDouble, lastZDouble, textureAtlas.getAtlasSprite("voxelmap:images/waypoints/target.png"), 1.0F, 0.0F, 0.0F);
         }
 
-        OpenGL.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
     }
 
     private void drawWaypoint(MatrixStack matrixStack, Waypoint pt, TextureAtlas textureAtlas, int x, int y, int scScale, double lastXDouble, double lastZDouble, Sprite icon, Float r, Float g, Float b) {
@@ -1720,7 +1720,7 @@ public class Map implements Runnable, IChangeObserver {
                 }
 
                 matrixStack.push();
-                OpenGL.glColor4f(r, g, b, !pt.enabled && !target ? 0.3F : 1.0F);
+                RenderSystem.setShaderColor(r, g, b, !pt.enabled && !target ? 0.3F : 1.0F);
                 matrixStack.translate(x, y, 0.0);
                 matrixStack.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(-locate));
                 if (uprightIcon) {
@@ -1765,7 +1765,7 @@ public class Map implements Runnable, IChangeObserver {
                 }
 
                 matrixStack.push();
-                OpenGL.glColor4f(r, g, b, !pt.enabled && !target ? 0.3F : 1.0F);
+                RenderSystem.setShaderColor(r, g, b, !pt.enabled && !target ? 0.3F : 1.0F);
                 matrixStack.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(-locate));
                 matrixStack.translate(0.0, -hypot, 0.0);
                 matrixStack.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(-(-locate)));
@@ -1789,8 +1789,8 @@ public class Map implements Runnable, IChangeObserver {
         try {
             RenderSystem.setShader(GameRenderer::getPositionTexProgram);
             matrixStack.push();
-            OpenGL.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-            OpenGL.glBlendFunc(OpenGL.GL11_GL_SRC_ALPHA, OpenGL.GL11_GL_ONE_MINUS_SRC_ALPHA);
+            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+            RenderSystem.blendFunc(OpenGL.GL11_GL_SRC_ALPHA, OpenGL.GL11_GL_ONE_MINUS_SRC_ALPHA);
             OpenGL.Utils.img2(this.arrowResourceLocation);
             OpenGL.glTexParameteri(OpenGL.GL11_GL_TEXTURE_2D, OpenGL.GL11_GL_TEXTURE_MIN_FILTER, OpenGL.GL11_GL_LINEAR);
             OpenGL.glTexParameteri(OpenGL.GL11_GL_TEXTURE_2D, OpenGL.GL11_GL_TEXTURE_MAG_FILTER, OpenGL.GL11_GL_LINEAR);
@@ -2070,7 +2070,7 @@ public class Map implements Runnable, IChangeObserver {
             this.welcomeText[7] = this.options.keyBindZoom.getBoundKeyLocalizedText().copy().append(": ").append((Text.translatable("minimap.ui.welcome8")).formatted(Formatting.GRAY));
         }
 
-        OpenGL.glBlendFunc(OpenGL.GL11_GL_SRC_ALPHA, OpenGL.GL11_GL_ONE_MINUS_SRC_ALPHA);
+        RenderSystem.blendFunc(OpenGL.GL11_GL_SRC_ALPHA, OpenGL.GL11_GL_ONE_MINUS_SRC_ALPHA);
         int maxSize = 0;
         int border = 2;
         Text head = this.welcomeText[0];

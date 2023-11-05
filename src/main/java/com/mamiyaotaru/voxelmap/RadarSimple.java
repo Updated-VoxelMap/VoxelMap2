@@ -101,7 +101,7 @@ public class RadarSimple implements IRadar {
                 this.renderMapMobs(matrixStack, this.layoutVariables.mapX, this.layoutVariables.mapY);
             }
 
-            OpenGL.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
         }
     }
@@ -197,11 +197,11 @@ public class RadarSimple implements IRadar {
             contact.brightness *= contact.brightness;
             contact.angle = (float) Math.toDegrees(Math.atan2(wayX, wayZ));
             contact.distance = Math.sqrt(wayX * wayX + wayZ * wayZ) / this.layoutVariables.zoomScaleAdjusted;
-            OpenGL.glBlendFunc(OpenGL.GL11_GL_SRC_ALPHA, OpenGL.GL11_GL_ONE_MINUS_SRC_ALPHA);
+            RenderSystem.blendFunc(OpenGL.GL11_GL_SRC_ALPHA, OpenGL.GL11_GL_ONE_MINUS_SRC_ALPHA);
             if (wayY < 0) {
-                OpenGL.glColor4f(1.0F, 1.0F, 1.0F, contact.brightness);
+                RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, contact.brightness);
             } else {
-                OpenGL.glColor3f(contact.brightness, contact.brightness, contact.brightness);
+                RenderSystem.setShaderColor(contact.brightness, contact.brightness, contact.brightness, 1.0f);
             }
 
             if (this.minimapOptions.rotates) {

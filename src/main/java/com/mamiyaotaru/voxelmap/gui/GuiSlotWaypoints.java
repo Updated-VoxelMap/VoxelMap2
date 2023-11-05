@@ -7,6 +7,7 @@ import com.mamiyaotaru.voxelmap.textures.TextureAtlas;
 import com.mamiyaotaru.voxelmap.util.OpenGL;
 import com.mamiyaotaru.voxelmap.util.TextUtils;
 import com.mamiyaotaru.voxelmap.util.Waypoint;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.widget.EntryListWidget;
 import net.minecraft.client.render.BufferBuilder;
@@ -152,13 +153,13 @@ class GuiSlotWaypoints extends GuiSlotMinimap {
                 }
             }
 
-            OpenGL.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
             OpenGL.Utils.img2(this.waypoint.enabled ? GuiSlotWaypoints.this.visibleIconIdentifier : GuiSlotWaypoints.this.invisibleIconIdentifier);
             drawContext.drawTexture(this.waypoint.enabled ? GuiSlotWaypoints.this.visibleIconIdentifier : GuiSlotWaypoints.this.invisibleIconIdentifier, x + 198, y - 2, 0, 0.0F, 0.0F, 18, 18, 18, 18);
             if (this.waypoint == this.parentGui.highlightedWaypoint) {
                 int x1 = x + 199;
                 int y1 = y - 1;
-                OpenGL.glColor4f(1.0F, 0.0F, 0.0F, 1.0F);
+                RenderSystem.setShaderColor(1.0F, 0.0F, 0.0F, 1.0F);
                 TextureAtlas textureAtlas = this.parentGui.waypointManager.getTextureAtlas();
                 OpenGL.Utils.disp(textureAtlas.getGlId());
                 Sprite icon = textureAtlas.getAtlasSprite("voxelmap:images/waypoints/target.png");

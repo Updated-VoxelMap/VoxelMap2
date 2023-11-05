@@ -29,8 +29,6 @@ public final class VoxelConstants {
     @NotNull
     public static MinecraftClient getMinecraft() { return MinecraftClient.getInstance(); }
 
-    public static boolean isSystemMacOS() { return MinecraftClient.IS_SYSTEM_MAC; }
-
     public static boolean isFabulousGraphicsOrBetter() { return MinecraftClient.isFabulousGraphicsOrBetter(); }
 
     public static boolean isSinglePlayer() { return getMinecraft().isInSingleplayer(); }
