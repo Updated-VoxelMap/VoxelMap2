@@ -255,14 +255,14 @@ public class WaypointContainer {
             if (withDepth) {
                 OpenGL.glEnable(OpenGL.GL11_GL_DEPTH_TEST);
                 RenderSystem.depthMask(distance < maxDistance);
-                OpenGL.glPolygonOffset(1.0F, 7.0F);
+                RenderSystem.polygonOffset(1.0F, 7.0F);
                 vertexBuffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
                 vertexBuffer.vertex(matrix4f, (-halfStringWidth - 2), (-2 + elevateBy), 0.0F).color(pt.red, pt.green, pt.blue, 0.6F * fade).next();
                 vertexBuffer.vertex(matrix4f, (-halfStringWidth - 2), (9 + elevateBy), 0.0F).color(pt.red, pt.green, pt.blue, 0.6F * fade).next();
                 vertexBuffer.vertex(matrix4f, (halfStringWidth + 2), (9 + elevateBy), 0.0F).color(pt.red, pt.green, pt.blue, 0.6F * fade).next();
                 vertexBuffer.vertex(matrix4f, (halfStringWidth + 2), (-2 + elevateBy), 0.0F).color(pt.red, pt.green, pt.blue, 0.6F * fade).next();
                 tessellator.draw();
-                OpenGL.glPolygonOffset(1.0F, 5.0F);
+                RenderSystem.polygonOffset(1.0F, 5.0F);
                 vertexBuffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
                 vertexBuffer.vertex(matrix4f, (-halfStringWidth - 1), (-1 + elevateBy), 0.0F).color(0.0F, 0.0F, 0.0F, 0.15F * fade).next();
                 vertexBuffer.vertex(matrix4f, (-halfStringWidth - 1), (8 + elevateBy), 0.0F).color(0.0F, 0.0F, 0.0F, 0.15F * fade).next();
@@ -274,14 +274,14 @@ public class WaypointContainer {
             if (withoutDepth) {
                 OpenGL.glDisable(OpenGL.GL11_GL_DEPTH_TEST);
                 RenderSystem.depthMask(false);
-                OpenGL.glPolygonOffset(1.0F, 11.0F);
+                RenderSystem.polygonOffset(1.0F, 11.0F);
                 vertexBuffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
                 vertexBuffer.vertex(matrix4f, (-halfStringWidth - 2), (-2 + elevateBy), 0.0F).color(pt.red, pt.green, pt.blue, 0.15F * fade).next();
                 vertexBuffer.vertex(matrix4f, (-halfStringWidth - 2), (9 + elevateBy), 0.0F).color(pt.red, pt.green, pt.blue, 0.15F * fade).next();
                 vertexBuffer.vertex(matrix4f, (halfStringWidth + 2), (9 + elevateBy), 0.0F).color(pt.red, pt.green, pt.blue, 0.15F * fade).next();
                 vertexBuffer.vertex(matrix4f, (halfStringWidth + 2), (-2 + elevateBy), 0.0F).color(pt.red, pt.green, pt.blue, 0.15F * fade).next();
                 tessellator.draw();
-                OpenGL.glPolygonOffset(1.0F, 9.0F);
+                RenderSystem.polygonOffset(1.0F, 9.0F);
                 vertexBuffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
                 vertexBuffer.vertex(matrix4f, (-halfStringWidth - 1), (-1 + elevateBy), 0.0F).color(0.0F, 0.0F, 0.0F, 0.15F * fade).next();
                 vertexBuffer.vertex(matrix4f, (-halfStringWidth - 1), (8 + elevateBy), 0.0F).color(0.0F, 0.0F, 0.0F, 0.15F * fade).next();

@@ -1,6 +1,7 @@
 package com.mamiyaotaru.voxelmap.textures;
 
 import com.mamiyaotaru.voxelmap.util.OpenGL;
+import com.mojang.blaze3d.systems.RenderSystem;
 import org.apache.commons.io.IOUtils;
 
 import javax.imageio.ImageIO;
@@ -49,9 +50,9 @@ public final class TextureUtilLegacy {
         }
 
         for (int i = 0; i <= mipmapLevels; ++i) {
-            OpenGL.glPixelStorei(OpenGL.GL11_GL_UNPACK_ROW_LENGTH, 0);
-            OpenGL.glPixelStorei(OpenGL.GL11_GL_UNPACK_SKIP_PIXELS, 0);
-            OpenGL.glPixelStorei(OpenGL.GL11_GL_UNPACK_SKIP_ROWS, 0);
+            RenderSystem.pixelStore(OpenGL.GL11_GL_UNPACK_ROW_LENGTH, 0);
+            RenderSystem.pixelStore(OpenGL.GL11_GL_UNPACK_SKIP_PIXELS, 0);
+            RenderSystem.pixelStore(OpenGL.GL11_GL_UNPACK_SKIP_ROWS, 0);
             OpenGL.glTexImage2D(OpenGL.GL11_GL_TEXTURE_2D, i, OpenGL.GL11_GL_RGBA, width >> i, height >> i, 0, OpenGL.GL12_GL_BGRA, OpenGL.GL12_GL_UNSIGNED_INT_8_8_8_8_REV, (IntBuffer) null);
         }
 
@@ -106,9 +107,9 @@ public final class TextureUtilLegacy {
         int maxRows = 4194304 / width;
         setTextureBlurMipmap(blurred, mipmapped);
         setTextureClamped(clamped);
-        OpenGL.glPixelStorei(OpenGL.GL11_GL_UNPACK_ROW_LENGTH, width);
-        OpenGL.glPixelStorei(OpenGL.GL11_GL_UNPACK_SKIP_PIXELS, 0);
-        OpenGL.glPixelStorei(OpenGL.GL11_GL_UNPACK_SKIP_ROWS, 0);
+        RenderSystem.pixelStore(OpenGL.GL11_GL_UNPACK_ROW_LENGTH, width);
+        RenderSystem.pixelStore(OpenGL.GL11_GL_UNPACK_SKIP_PIXELS, 0);
+        RenderSystem.pixelStore(OpenGL.GL11_GL_UNPACK_SKIP_ROWS, 0);
 
         int rowsToCopy;
         for (int pos = 0; pos < width * height; pos += width * rowsToCopy) {

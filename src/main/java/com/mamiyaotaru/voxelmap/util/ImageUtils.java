@@ -1,6 +1,7 @@
 package com.mamiyaotaru.voxelmap.util;
 
 import com.mamiyaotaru.voxelmap.VoxelConstants;
+import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.systems.VertexSorter;
 import net.minecraft.client.util.math.MatrixStack;
@@ -24,8 +25,8 @@ import java.util.Arrays;
 public class ImageUtils {
     public static void saveImage(String name, int glid, int maxMipmapLevel, int width, int height) {
         OpenGL.glBindTexture(OpenGL.GL11_GL_TEXTURE_2D, glid);
-        OpenGL.glPixelStorei(OpenGL.GL11_GL_PACK_ALIGNMENT, 1);
-        OpenGL.glPixelStorei(OpenGL.GL11_GL_UNPACK_ALIGNMENT, 1);
+        RenderSystem.pixelStore(OpenGL.GL11_GL_PACK_ALIGNMENT, 1);
+        RenderSystem.pixelStore(OpenGL.GL11_GL_UNPACK_ALIGNMENT, 1);
 
         for (int mipmapLevel = 0; mipmapLevel <= maxMipmapLevel; ++mipmapLevel) {
             File file = new File(name + "_" + mipmapLevel + ".png");
@@ -86,8 +87,8 @@ public class ImageUtils {
     }
 
     public static BufferedImage createBufferedImageFromCurrentGLImage() {
-        int imageWidth = OpenGL.glGetTexLevelParameteri(OpenGL.GL11_GL_TEXTURE_2D, 0, OpenGL.GL11_GL_TRANSFORM_BIT);
-        int imageHeight = OpenGL.glGetTexLevelParameteri(OpenGL.GL11_GL_TEXTURE_2D, 0, OpenGL.GL11_GL_TEXTURE_HEIGHT);
+        int imageWidth = GlStateManager._getTexLevelParameter(OpenGL.GL11_GL_TEXTURE_2D, 0, OpenGL.GL11_GL_TRANSFORM_BIT);
+        int imageHeight = GlStateManager._getTexLevelParameter(OpenGL.GL11_GL_TEXTURE_2D, 0, OpenGL.GL11_GL_TEXTURE_HEIGHT);
         long size = (long) imageWidth * imageHeight * 4L;
         BufferedImage image;
         if (size < 2147483647L) {

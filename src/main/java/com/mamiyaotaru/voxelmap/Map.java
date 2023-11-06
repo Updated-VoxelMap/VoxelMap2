@@ -1619,7 +1619,7 @@ public class Map implements Runnable, IChangeObserver {
         OpenGL.glEnable(3089);
         OpenGL.glScissor((int) (guiScale * (x - 32)), (int) (guiScale * ((this.scHeight - y) - 32.0)), (int) (guiScale * 64.0), (int) (guiScale * 63.0));
         OpenGL.Utils.drawPre();
-        OpenGL.Utils.setMapWithScale(x, y, scale);
+        OpenGL.Utils.setMap(x, y, (int) (128f * scale));
         OpenGL.Utils.drawPost();
         OpenGL.glDisable(3089);
         matrixStack.pop();
@@ -1890,7 +1890,7 @@ public class Map implements Runnable, IChangeObserver {
 
     private void loadMapImage() {
         if (this.mapImageInt != -1) {
-            OpenGL.Utils.glah(this.mapImageInt);
+            RenderSystem.deleteTexture(this.mapImageInt);
         }
 
         try {

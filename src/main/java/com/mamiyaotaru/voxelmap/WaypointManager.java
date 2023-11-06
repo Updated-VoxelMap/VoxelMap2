@@ -12,6 +12,7 @@ import com.mamiyaotaru.voxelmap.util.OpenGL;
 import com.mamiyaotaru.voxelmap.util.TextUtils;
 import com.mamiyaotaru.voxelmap.util.Waypoint;
 import com.mamiyaotaru.voxelmap.util.WaypointContainer;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.ServerInfo;
 import net.minecraft.client.session.Session;
@@ -740,7 +741,7 @@ public class WaypointManager {
 
     private void loadBackgroundMapImage() {
         if (this.backgroundImageInfo != null) {
-            OpenGL.Utils.glah(this.backgroundImageInfo.glid);
+            RenderSystem.deleteTexture(this.backgroundImageInfo.glid);
             this.backgroundImageInfo = null;
         }
 

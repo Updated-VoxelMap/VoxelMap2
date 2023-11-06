@@ -106,14 +106,6 @@ public final class OpenGL {
             default -> VoxelConstants.getLogger().warn("OpenGL - Invalid state received by Disable (" + target + ")");
         }
     }
-    
-    public static int glGenTextures() { return GlStateManager._genTexture(); }
-
-    public static int glGetTexLevelParameteri(int target, int level, int pname) { return GlStateManager._getTexLevelParameter(target, level, pname); }
-
-    public static void glPixelStorei(int pname, int param) { RenderSystem.pixelStore(pname, param); }
-
-    public static void glPolygonOffset(float factor, float units) { RenderSystem.polygonOffset(factor, units); }
 
     public static void glTexImage2D(int target, int level, int internalFormat, int width, int height, int border, int format, int type, IntBuffer pixels) { GlStateManager._texImage2D(target, level, internalFormat, width, height, border, format, type, pixels); }
 
@@ -185,7 +177,7 @@ public final class OpenGL {
         public static void setupFramebuffer() {
             previousFboId = glGetInteger(GL30_GL_FRAMEBUFFER_BINDING);
             fboId = glGenFramebuffers();
-            fboTextureId = glGenTextures();
+            fboTextureId = GlStateManager._genTexture();
 
             int width = 512;
             int height = 512;
@@ -243,8 +235,6 @@ public final class OpenGL {
             glBindFramebuffer(GL30_GL_DRAW_FRAMEBUFFER, previousFboIdDraw);
         }
 
-        public static void setMapWithScale(int x, int y, float scale) { setMap(x, y, (int) (128f * scale)); }
-
         public static void setMap(float x, float y, int imageSize) {
             float scale = imageSize / 4.0f;
 
@@ -278,9 +268,9 @@ public final class OpenGL {
 
             glTexParameteri(GL11_GL_TEXTURE_2D, GL11_GL_TEXTURE_MIN_FILTER, GL11_GL_LINEAR);
             glTexParameteri(GL11_GL_TEXTURE_2D, GL11_GL_TEXTURE_MAG_FILTER, GL11_GL_LINEAR);
-            glPixelStorei(GL11_GL_UNPACK_ROW_LENGTH, 0);
-            glPixelStorei(GL11_GL_UNPACK_SKIP_PIXELS, 0);
-            glPixelStorei(GL11_GL_UNPACK_SKIP_ROWS, 0);
+            RenderSystem.pixelStore(GL11_GL_UNPACK_ROW_LENGTH, 0);
+            RenderSystem.pixelStore(GL11_GL_UNPACK_SKIP_PIXELS, 0);
+            RenderSystem.pixelStore(GL11_GL_UNPACK_SKIP_ROWS, 0);
             glTexImage2D(GL11_GL_TEXTURE_2D, 0, GL11_GL_RGBA, width, height, 0, GL12_GL_BGRA, GL12_GL_UNSIGNED_INT_8_8_8_8_REV, DATA_BUFFER);
 
             return glId;
@@ -308,13 +298,9 @@ public final class OpenGL {
             return nativeImage;
         }
 
-        public static void drawPre() { drawPre(VertexFormats.POSITION_TEXTURE); }
-
-        public static void drawPre(VertexFormat format) { VERTEX_BUFFER.begin(VertexFormat.DrawMode.QUADS, format); }
+        public static void drawPre() { VERTEX_BUFFER.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE); }
 
         public static void drawPost() { TESSELLATOR.draw(); }
-
-        public static void glah(int g) { RenderSystem.deleteTexture(g); }
 
         public static void ldrawone(int x, int y, double z, float u, float v) { VERTEX_BUFFER.vertex(x, y, z).texture(u, v).next(); }
 

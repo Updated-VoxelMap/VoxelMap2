@@ -190,7 +190,7 @@ public class GuiPersistentMap extends PopupGuiScreen implements IGuiWaypoints {
         float scale = skinImage.getWidth() / 8.0F;
         skinImage = ImageUtils.fillOutline(ImageUtils.pad(ImageUtils.scaleImage(skinImage, 2.0F / scale)), true, 1);
         if (playerGLID != 0) {
-            OpenGL.Utils.glah(playerGLID);
+            RenderSystem.deleteTexture(playerGLID);
         }
 
         playerGLID = OpenGL.Utils.tex(skinImage);
