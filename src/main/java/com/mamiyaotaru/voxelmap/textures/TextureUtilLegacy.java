@@ -1,6 +1,7 @@
 package com.mamiyaotaru.voxelmap.textures;
 
 import com.mamiyaotaru.voxelmap.util.OpenGL;
+import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import org.apache.commons.io.IOUtils;
 
@@ -43,9 +44,9 @@ public final class TextureUtilLegacy {
     public static void allocateTextureImpl(int glTextureId, int mipmapLevels, int width, int height) {
         bindTexture(glTextureId);
         if (mipmapLevels >= 0) {
-            OpenGL.glTexParameteri(OpenGL.GL11_GL_TEXTURE_2D, 33085, mipmapLevels);
-            OpenGL.glTexParameteri(OpenGL.GL11_GL_TEXTURE_2D, 33082, 0);
-            OpenGL.glTexParameteri(OpenGL.GL11_GL_TEXTURE_2D, 33083, mipmapLevels);
+            RenderSystem.texParameter(OpenGL.GL11_GL_TEXTURE_2D, 33085, mipmapLevels);
+            RenderSystem.texParameter(OpenGL.GL11_GL_TEXTURE_2D, 33082, 0);
+            RenderSystem.texParameter(OpenGL.GL11_GL_TEXTURE_2D, 33083, mipmapLevels);
             OpenGL.glTexParameterf(OpenGL.GL11_GL_TEXTURE_2D, 34049, 0.0F);
         }
 
@@ -53,7 +54,7 @@ public final class TextureUtilLegacy {
             RenderSystem.pixelStore(OpenGL.GL11_GL_UNPACK_ROW_LENGTH, 0);
             RenderSystem.pixelStore(OpenGL.GL11_GL_UNPACK_SKIP_PIXELS, 0);
             RenderSystem.pixelStore(OpenGL.GL11_GL_UNPACK_SKIP_ROWS, 0);
-            OpenGL.glTexImage2D(OpenGL.GL11_GL_TEXTURE_2D, i, OpenGL.GL11_GL_RGBA, width >> i, height >> i, 0, OpenGL.GL12_GL_BGRA, OpenGL.GL12_GL_UNSIGNED_INT_8_8_8_8_REV, (IntBuffer) null);
+            GlStateManager._texImage2D(OpenGL.GL11_GL_TEXTURE_2D, i, OpenGL.GL11_GL_RGBA, width >> i, height >> i, 0, OpenGL.GL12_GL_BGRA, OpenGL.GL12_GL_UNSIGNED_INT_8_8_8_8_REV, (IntBuffer) null);
         }
 
     }
@@ -83,22 +84,22 @@ public final class TextureUtilLegacy {
 
     public static void setTextureClamped(boolean clamped) {
         if (clamped) {
-            OpenGL.glTexParameteri(OpenGL.GL11_GL_TEXTURE_2D, OpenGL.GL11_GL_TEXTURE_WRAP_S, OpenGL.GL12_GL_CLAMP_TO_EDGE);
-            OpenGL.glTexParameteri(OpenGL.GL11_GL_TEXTURE_2D, OpenGL.GL11_GL_TEXTURE_WRAP_T, OpenGL.GL12_GL_CLAMP_TO_EDGE);
+            RenderSystem.texParameter(OpenGL.GL11_GL_TEXTURE_2D, OpenGL.GL11_GL_TEXTURE_WRAP_S, OpenGL.GL12_GL_CLAMP_TO_EDGE);
+            RenderSystem.texParameter(OpenGL.GL11_GL_TEXTURE_2D, OpenGL.GL11_GL_TEXTURE_WRAP_T, OpenGL.GL12_GL_CLAMP_TO_EDGE);
         } else {
-            OpenGL.glTexParameteri(OpenGL.GL11_GL_TEXTURE_2D, OpenGL.GL11_GL_TEXTURE_WRAP_S, 10497);
-            OpenGL.glTexParameteri(OpenGL.GL11_GL_TEXTURE_2D, OpenGL.GL11_GL_TEXTURE_WRAP_T, 10497);
+            RenderSystem.texParameter(OpenGL.GL11_GL_TEXTURE_2D, OpenGL.GL11_GL_TEXTURE_WRAP_S, 10497);
+            RenderSystem.texParameter(OpenGL.GL11_GL_TEXTURE_2D, OpenGL.GL11_GL_TEXTURE_WRAP_T, 10497);
         }
 
     }
 
     public static void setTextureBlurMipmap(boolean blurred, boolean mipmapped) {
         if (blurred) {
-            OpenGL.glTexParameteri(OpenGL.GL11_GL_TEXTURE_2D, OpenGL.GL11_GL_TEXTURE_MIN_FILTER, mipmapped ? OpenGL.GL11_GL_LINEAR_MIPMAP_LINEAR : OpenGL.GL11_GL_LINEAR);
-            OpenGL.glTexParameteri(OpenGL.GL11_GL_TEXTURE_2D, OpenGL.GL11_GL_TEXTURE_MAG_FILTER, OpenGL.GL11_GL_LINEAR);
+            RenderSystem.texParameter(OpenGL.GL11_GL_TEXTURE_2D, OpenGL.GL11_GL_TEXTURE_MIN_FILTER, mipmapped ? OpenGL.GL11_GL_LINEAR_MIPMAP_LINEAR : OpenGL.GL11_GL_LINEAR);
+            RenderSystem.texParameter(OpenGL.GL11_GL_TEXTURE_2D, OpenGL.GL11_GL_TEXTURE_MAG_FILTER, OpenGL.GL11_GL_LINEAR);
         } else {
-            OpenGL.glTexParameteri(OpenGL.GL11_GL_TEXTURE_2D, OpenGL.GL11_GL_TEXTURE_MIN_FILTER, mipmapped ? 9986 : OpenGL.GL11_GL_NEAREST);
-            OpenGL.glTexParameteri(OpenGL.GL11_GL_TEXTURE_2D, OpenGL.GL11_GL_TEXTURE_MAG_FILTER, OpenGL.GL11_GL_NEAREST);
+            RenderSystem.texParameter(OpenGL.GL11_GL_TEXTURE_2D, OpenGL.GL11_GL_TEXTURE_MIN_FILTER, mipmapped ? 9986 : OpenGL.GL11_GL_NEAREST);
+            RenderSystem.texParameter(OpenGL.GL11_GL_TEXTURE_2D, OpenGL.GL11_GL_TEXTURE_MAG_FILTER, OpenGL.GL11_GL_NEAREST);
         }
 
     }

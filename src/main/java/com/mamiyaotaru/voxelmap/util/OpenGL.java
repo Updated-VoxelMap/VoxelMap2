@@ -107,11 +107,7 @@ public final class OpenGL {
         }
     }
 
-    public static void glTexImage2D(int target, int level, int internalFormat, int width, int height, int border, int format, int type, IntBuffer pixels) { GlStateManager._texImage2D(target, level, internalFormat, width, height, border, format, type, pixels); }
-
     public static void glTexParameterf(int target, int pname, float param) { GlStateManager._texParameter(target, pname, param); }
-
-    public static void glTexParameteri(int target, int pname, int param) { RenderSystem.texParameter(target, pname, param); }
 
     public static void glViewport(int x, int y, int width, int height) { RenderSystem.viewport(x, y, width, height); }
 
@@ -185,7 +181,7 @@ public final class OpenGL {
 
             glBindFramebuffer(GL30_GL_FRAMEBUFFER, fboId);
             glBindTexture(GL11_GL_TEXTURE_2D, fboTextureId);
-            glTexParameteri(GL11_GL_TEXTURE_2D, GL11_GL_TEXTURE_WRAP_S, GL12_GL_CLAMP_TO_EDGE);
+            RenderSystem.texParameter(GL11_GL_TEXTURE_2D, GL11_GL_TEXTURE_WRAP_S, GL12_GL_CLAMP_TO_EDGE);
             glTexParameterf(GL11_GL_TEXTURE_2D, GL11_GL_TEXTURE_WRAP_T, GL12_GL_CLAMP_TO_EDGE);
             glTexParameterf(GL11_GL_TEXTURE_2D, GL11_GL_TEXTURE_MIN_FILTER, GL11_GL_LINEAR);
             glTexParameterf(GL11_GL_TEXTURE_2D, GL11_GL_TEXTURE_MAG_FILTER, GL11_GL_LINEAR);
@@ -266,12 +262,12 @@ public final class OpenGL {
             DATA_BUFFER.put(data, 0, width * height);
             DATA_BUFFER.position(0).limit(width * height);
 
-            glTexParameteri(GL11_GL_TEXTURE_2D, GL11_GL_TEXTURE_MIN_FILTER, GL11_GL_LINEAR);
-            glTexParameteri(GL11_GL_TEXTURE_2D, GL11_GL_TEXTURE_MAG_FILTER, GL11_GL_LINEAR);
+            RenderSystem.texParameter(GL11_GL_TEXTURE_2D, GL11_GL_TEXTURE_MIN_FILTER, GL11_GL_LINEAR);
+            RenderSystem.texParameter(GL11_GL_TEXTURE_2D, GL11_GL_TEXTURE_MAG_FILTER, GL11_GL_LINEAR);
             RenderSystem.pixelStore(GL11_GL_UNPACK_ROW_LENGTH, 0);
             RenderSystem.pixelStore(GL11_GL_UNPACK_SKIP_PIXELS, 0);
             RenderSystem.pixelStore(GL11_GL_UNPACK_SKIP_ROWS, 0);
-            glTexImage2D(GL11_GL_TEXTURE_2D, 0, GL11_GL_RGBA, width, height, 0, GL12_GL_BGRA, GL12_GL_UNSIGNED_INT_8_8_8_8_REV, DATA_BUFFER);
+            GlStateManager._texImage2D(GL11_GL_TEXTURE_2D, 0, GL11_GL_RGBA, width, height, 0, GL12_GL_BGRA, GL12_GL_UNSIGNED_INT_8_8_8_8_REV, DATA_BUFFER);
 
             return glId;
         }
