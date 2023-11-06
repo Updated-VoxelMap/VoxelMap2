@@ -59,11 +59,11 @@ public class WaypointContainer {
         double renderPosX = GameVariableAccessShim.xCoordDouble();
         double renderPosY = GameVariableAccessShim.yCoordDouble();
         double renderPosZ = GameVariableAccessShim.zCoordDouble();
-        OpenGL.glEnable(OpenGL.GL11_GL_CULL_FACE);
+        RenderSystem.enableCull();
         if (this.options.showBeacons && beacons) {
-            OpenGL.glEnable(OpenGL.GL11_GL_DEPTH_TEST);
+            RenderSystem.enableDepthTest();
             RenderSystem.depthMask(false);
-            OpenGL.glEnable(OpenGL.GL11_GL_BLEND);
+            RenderSystem.enableBlend();
             RenderSystem.blendFunc(OpenGL.GL11_GL_SRC_ALPHA, 1);
             RenderSystem.setShader(GameRenderer::getPositionColorProgram);
             Matrix4f matrix4f = matrixStack.peek().getPositionMatrix();
@@ -80,12 +80,12 @@ public class WaypointContainer {
                 }
             }
 
-            OpenGL.glDisable(OpenGL.GL11_GL_BLEND);
+            RenderSystem.disableBlend();
             RenderSystem.depthMask(true);
         }
 
         if (this.options.showWaypoints && signs) {
-            OpenGL.glEnable(OpenGL.GL11_GL_BLEND);
+            RenderSystem.enableBlend();
             RenderSystem.blendFuncSeparate(OpenGL.GL11_GL_SRC_ALPHA, OpenGL.GL11_GL_ONE_MINUS_SRC_ALPHA, 1, OpenGL.GL11_GL_ONE_MINUS_SRC_ALPHA);
 
             for (Waypoint pt : this.wayPts) {
@@ -111,9 +111,9 @@ public class WaypointContainer {
                 this.renderLabel(matrixStack, this.highlightedWaypoint, distance, isPointedAt, "*&^TARget%$^", x - renderPosX, y - renderPosY - 0.5, z - renderPosZ, 64, withDepth, withoutDepth);
             }
 
-            OpenGL.glEnable(OpenGL.GL11_GL_DEPTH_TEST);
+            RenderSystem.enableDepthTest();
             RenderSystem.depthMask(true);
-            OpenGL.glDisable(OpenGL.GL11_GL_BLEND);
+            RenderSystem.disableBlend();
         }
 
     }
@@ -226,7 +226,7 @@ public class WaypointContainer {
         RenderSystem.setShaderTexture(0, textureAtlas.getGlId());
         if (withDepth) {
             RenderSystem.depthMask(distance < maxDistance);
-            OpenGL.glEnable(OpenGL.GL11_GL_DEPTH_TEST);
+            RenderSystem.enableDepthTest();
             vertexBuffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE_COLOR);
             vertexBuffer.vertex(matrix4f, -width, -width, 0.0F).texture(icon.getMinU(), icon.getMinV()).color(r, g, b, fade).next();
             vertexBuffer.vertex(matrix4f, -width, width, 0.0F).texture(icon.getMinU(), icon.getMaxV()).color(r, g, b, fade).next();
@@ -236,7 +236,7 @@ public class WaypointContainer {
         }
 
         if (withoutDepth) {
-            OpenGL.glDisable(OpenGL.GL11_GL_DEPTH_TEST);
+            RenderSystem.disableDepthTest();
             RenderSystem.depthMask(false);
             vertexBuffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE_COLOR);
             vertexBuffer.vertex(matrix4f, -width, -width, 0.0F).texture(icon.getMinU(), icon.getMinV()).color(r, g, b, 0.3F * fade).next();
@@ -249,11 +249,11 @@ public class WaypointContainer {
         TextRenderer fontRenderer = VoxelConstants.getMinecraft().textRenderer;
         if (isPointedAt && fontRenderer != null) {
             byte elevateBy = -19;
-            OpenGL.glEnable(OpenGL.GL11_GL_POLYGON_OFFSET_FILL);
+            RenderSystem.enablePolygonOffset();
             int halfStringWidth = fontRenderer.getWidth(name) / 2;
             RenderSystem.setShader(GameRenderer::getPositionColorProgram);
             if (withDepth) {
-                OpenGL.glEnable(OpenGL.GL11_GL_DEPTH_TEST);
+                RenderSystem.enableDepthTest();
                 RenderSystem.depthMask(distance < maxDistance);
                 RenderSystem.polygonOffset(1.0F, 7.0F);
                 vertexBuffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
@@ -272,7 +272,7 @@ public class WaypointContainer {
             }
 
             if (withoutDepth) {
-                OpenGL.glDisable(OpenGL.GL11_GL_DEPTH_TEST);
+                RenderSystem.disableDepthTest();
                 RenderSystem.depthMask(false);
                 RenderSystem.polygonOffset(1.0F, 11.0F);
                 vertexBuffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
@@ -290,17 +290,17 @@ public class WaypointContainer {
                 tessellator.draw();
             }
 
-            OpenGL.glDisable(OpenGL.GL11_GL_POLYGON_OFFSET_FILL);
+            RenderSystem.disablePolygonOffset();
             RenderSystem.depthMask(false);
             VertexConsumerProvider.Immediate vertexConsumerProvider = VoxelConstants.getMinecraft().getBufferBuilders().getEntityVertexConsumers();
             if (withoutDepth) {
                 int textColor = (int) (255.0F * fade) << 24 | 13421772;
-                OpenGL.glDisable(OpenGL.GL11_GL_DEPTH_TEST);
+                RenderSystem.disableDepthTest();
                 fontRenderer.draw(Text.literal(name), (-fontRenderer.getWidth(name) / 2f), elevateBy, textColor, false, matrix4f, vertexConsumerProvider, TextLayerType.SEE_THROUGH, 0, 15728880);
                 vertexConsumerProvider.draw();
             }
 
-            OpenGL.glEnable(OpenGL.GL11_GL_BLEND);
+            RenderSystem.enableBlend();
         }
 
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);

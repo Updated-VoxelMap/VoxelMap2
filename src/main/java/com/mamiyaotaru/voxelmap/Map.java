@@ -23,6 +23,7 @@ import com.mamiyaotaru.voxelmap.util.OpenGL;
 import com.mamiyaotaru.voxelmap.util.ReflectionUtils;
 import com.mamiyaotaru.voxelmap.util.ScaledMutableNativeImageBackedTexture;
 import com.mamiyaotaru.voxelmap.util.Waypoint;
+import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.systems.VertexSorter;
 import net.fabricmc.loader.api.FabricLoader;
@@ -497,7 +498,7 @@ public class Map implements Runnable, IChangeObserver {
         try {
             if (this.world != null) {
                 if (this.needLightmapRefresh && VoxelConstants.getElapsedTicks() != this.tickWithLightChange && !VoxelConstants.getMinecraft().isPaused() || this.options.realTimeTorches) {
-                    OpenGL.glBindTexture(OpenGL.GL11_GL_TEXTURE_2D, this.lightmapTexture.getGlId());
+                    RenderSystem.bindTexture(this.lightmapTexture.getGlId());
                     ByteBuffer byteBuffer = ByteBuffer.allocateDirect(1024).order(ByteOrder.nativeOrder());
                     OpenGL.glGetTexImage(OpenGL.GL11_GL_TEXTURE_2D, 0, OpenGL.GL11_GL_RGBA, OpenGL.GL11_GL_UNSIGNED_BYTE, byteBuffer);
 
@@ -672,7 +673,7 @@ public class Map implements Runnable, IChangeObserver {
             mapY += (int) (statusIconOffset * resFactor);
         }
 
-        OpenGL.glEnable(OpenGL.GL11_GL_BLEND);
+        RenderSystem.enableBlend();
         RenderSystem.blendFunc(OpenGL.GL11_GL_SRC_ALPHA, 0);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         if (!this.options.hide) {
@@ -682,7 +683,7 @@ public class Map implements Runnable, IChangeObserver {
                 this.renderMap(modelViewMatrixStack, mapX, mapY, scScale);
             }
 
-            OpenGL.glDisable(OpenGL.GL11_GL_DEPTH_TEST);
+            RenderSystem.disableDepthTest();
             if (VoxelConstants.getVoxelMapInstance().getRadar() != null && !this.fullscreenMap) {
                 this.layoutVariables.updateVars(scScale, mapX, mapY, this.zoomScale, this.zoomScaleAdjusted);
                 VoxelConstants.getVoxelMapInstance().getRadar().onTickInGame(drawContext, modelViewMatrixStack, this.layoutVariables);
@@ -692,7 +693,7 @@ public class Map implements Runnable, IChangeObserver {
                 this.drawDirections(drawContext, mapX, mapY);
             }
 
-            OpenGL.glEnable(OpenGL.GL11_GL_BLEND);
+            RenderSystem.enableBlend();
             if (this.fullscreenMap) {
                 this.drawArrow(modelViewMatrixStack, this.scWidth / 2, this.scHeight / 2);
             } else {
@@ -705,12 +706,12 @@ public class Map implements Runnable, IChangeObserver {
         }
 
         RenderSystem.depthMask(true);
-        OpenGL.glEnable(OpenGL.GL11_GL_DEPTH_TEST);
+        RenderSystem.enableDepthTest();
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         modelViewMatrixStack.pop();
         RenderSystem.restoreProjectionMatrix();
         RenderSystem.applyModelViewMatrix();
-        OpenGL.glDisable(OpenGL.GL11_GL_DEPTH_TEST);
+        RenderSystem.disableDepthTest();
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
@@ -718,12 +719,12 @@ public class Map implements Runnable, IChangeObserver {
         VertexConsumerProvider.Immediate vertexConsumerProvider = VoxelConstants.getMinecraft().getBufferBuilders().getEntityVertexConsumers();
         VoxelConstants.getMinecraft().textRenderer.draw(Text.literal("******sdkfjhsdkjfhsdkjfh"), 100.0F, 100.0F, -1, true, matrix4f, vertexConsumerProvider, TextRenderer.TextLayerType.NORMAL, 0, 15728880);
         if (this.showWelcomeScreen) {
-            OpenGL.glEnable(OpenGL.GL11_GL_BLEND);
+            RenderSystem.enableBlend();
             this.drawWelcomeScreen(drawContext, VoxelConstants.getMinecraft().getWindow().getScaledWidth(), VoxelConstants.getMinecraft().getWindow().getScaledHeight());
         }
 
         RenderSystem.depthMask(true);
-        OpenGL.glEnable(OpenGL.GL11_GL_DEPTH_TEST);
+        RenderSystem.enableDepthTest();
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.texParameter(OpenGL.GL11_GL_TEXTURE_2D, OpenGL.GL11_GL_TEXTURE_MIN_FILTER, OpenGL.GL11_GL_NEAREST);
         RenderSystem.texParameter(OpenGL.GL11_GL_TEXTURE_2D, OpenGL.GL11_GL_TEXTURE_MAG_FILTER, OpenGL.GL11_GL_NEAREST);
@@ -1543,7 +1544,7 @@ public class Map implements Runnable, IChangeObserver {
             scale = 1.4142F;
         }
 
-        OpenGL.glBindTexture(OpenGL.GL11_GL_TEXTURE_2D, 0);
+        RenderSystem.bindTexture(0);
         Matrix4f minimapProjectionMatrix = RenderSystem.getProjectionMatrix();
         RenderSystem.setShader(GameRenderer::getPositionTexProgram);
         Matrix4f matrix4f = new Matrix4f().ortho(0.0F, 512.0F, 512.0F, 0.0F, 1000.0F, 3000.0F);
@@ -1555,7 +1556,7 @@ public class Map implements Runnable, IChangeObserver {
         matrixStack.translate(0.0, 0.0, -2000.0);
         RenderSystem.applyModelViewMatrix();
         RenderSystem.depthMask(false);
-        OpenGL.glDisable(OpenGL.GL11_GL_DEPTH_TEST);
+        RenderSystem.disableDepthTest();
         RenderSystem.clearColor(0.0F, 0.0F, 0.0F, 0.0F);
         RenderSystem.clear(OpenGL.GL11_GL_COLOR_BUFFER_BIT, false);
         RenderSystem.blendFunc(OpenGL.GL11_GL_SRC_ALPHA, 0);
@@ -1606,7 +1607,7 @@ public class Map implements Runnable, IChangeObserver {
         matrixStack.pop();
         RenderSystem.applyModelViewMatrix();
         RenderSystem.depthMask(true);
-        OpenGL.glEnable(OpenGL.GL11_GL_DEPTH_TEST);
+        RenderSystem.enableDepthTest();
         OpenGL.Utils.unbindFramebuffer();
         RenderSystem.viewport(0, 0, VoxelConstants.getMinecraft().getWindow().getFramebufferWidth(), VoxelConstants.getMinecraft().getWindow().getFramebufferHeight());
         matrixStack.pop();
@@ -1616,12 +1617,12 @@ public class Map implements Runnable, IChangeObserver {
         RenderSystem.setShaderTexture(0, OpenGL.Utils.fboTextureId);
 
         double guiScale = (double) VoxelConstants.getMinecraft().getWindow().getFramebufferWidth() / this.scWidth;
-        OpenGL.glEnable(3089);
+        GlStateManager._enableScissorTest();
         OpenGL.glScissor((int) (guiScale * (x - 32)), (int) (guiScale * ((this.scHeight - y) - 32.0)), (int) (guiScale * 64.0), (int) (guiScale * 63.0));
         OpenGL.Utils.drawPre();
         OpenGL.Utils.setMap(x, y, (int) (128f * scale));
         OpenGL.Utils.drawPost();
-        OpenGL.glDisable(3089);
+        RenderSystem.disableScissor();
         matrixStack.pop();
         RenderSystem.applyModelViewMatrix();
         RenderSystem.blendFunc(OpenGL.GL11_GL_SRC_ALPHA, OpenGL.GL11_GL_ONE_MINUS_SRC_ALPHA);
@@ -1636,9 +1637,9 @@ public class Map implements Runnable, IChangeObserver {
         double lastZDouble = GameVariableAccessShim.zCoordDouble();
         TextureAtlas textureAtlas = VoxelConstants.getVoxelMapInstance().getWaypointManager().getTextureAtlas();
         RenderSystem.setShaderTexture(0, textureAtlas.getGlId());
-        OpenGL.glEnable(OpenGL.GL11_GL_BLEND);
+        RenderSystem.enableBlend();
         RenderSystem.blendFunc(OpenGL.GL11_GL_SRC_ALPHA, OpenGL.GL11_GL_ONE_MINUS_SRC_ALPHA);
-        OpenGL.glDisable(OpenGL.GL11_GL_DEPTH_TEST);
+        RenderSystem.disableDepthTest();
         Waypoint highlightedPoint = this.waypointManager.getHighlightedWaypoint();
 
         for (Waypoint pt : this.waypointManager.getWaypoints()) {
@@ -1830,7 +1831,7 @@ public class Map implements Runnable, IChangeObserver {
         matrixStack.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(this.northRotate));
         matrixStack.translate(-(scWidth / 2.0F), -(scHeight / 2.0F), -0.0);
         RenderSystem.applyModelViewMatrix();
-        OpenGL.glDisable(OpenGL.GL11_GL_DEPTH_TEST);
+        RenderSystem.disableDepthTest();
         OpenGL.Utils.drawPre();
         int left = scWidth / 2 - 128;
         int top = scHeight / 2 - 128;
@@ -1846,7 +1847,7 @@ public class Map implements Runnable, IChangeObserver {
             int minimumSize = (int) Math.pow(2.0, this.zoom);
             minimumSize *= minimumSize;
             ArrayList<AbstractMapData.BiomeLabel> labels = this.mapData[this.zoom].getBiomeLabels();
-            OpenGL.glDisable(OpenGL.GL11_GL_DEPTH_TEST);
+            RenderSystem.disableDepthTest();
             matrixStack.push();
             matrixStack.translate(0.0, 0.0, 1160.0);
             RenderSystem.applyModelViewMatrix();
@@ -1867,7 +1868,7 @@ public class Map implements Runnable, IChangeObserver {
 
             matrixStack.pop();
             RenderSystem.applyModelViewMatrix();
-            OpenGL.glEnable(OpenGL.GL11_GL_DEPTH_TEST);
+            RenderSystem.enableDepthTest();
         }
 
     }

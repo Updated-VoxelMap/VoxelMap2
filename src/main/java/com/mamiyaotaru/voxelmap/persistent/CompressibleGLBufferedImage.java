@@ -80,7 +80,7 @@ public class CompressibleGLBufferedImage {
         }
 
         buffer.position(0).limit(this.bytes.length);
-        OpenGL.glBindTexture(OpenGL.GL11_GL_TEXTURE_2D, this.index);
+        RenderSystem.bindTexture(this.index);
         RenderSystem.texParameter(OpenGL.GL11_GL_TEXTURE_2D, OpenGL.GL11_GL_TEXTURE_MIN_FILTER, OpenGL.GL11_GL_NEAREST);
         RenderSystem.texParameter(OpenGL.GL11_GL_TEXTURE_2D, OpenGL.GL11_GL_TEXTURE_MAG_FILTER, OpenGL.GL11_GL_NEAREST);
         RenderSystem.texParameter(OpenGL.GL11_GL_TEXTURE_2D, OpenGL.GL11_GL_TEXTURE_WRAP_S, OpenGL.GL12_GL_CLAMP_TO_EDGE);

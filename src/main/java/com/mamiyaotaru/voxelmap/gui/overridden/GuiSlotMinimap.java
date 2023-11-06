@@ -64,7 +64,7 @@ public abstract class GuiSlotMinimap extends EntryListWidget {
         if (this.hasListHeader) renderHeader(drawContext, leftEdge, topOfListYPos);
 
         renderList(drawContext, mouseX, mouseY, delta);
-        OpenGL.glDisable(OpenGL.GL11_GL_DEPTH_TEST);
+        RenderSystem.disableDepthTest();
 
         byte topBottomFadeHeight = 4;
 
@@ -88,7 +88,7 @@ public abstract class GuiSlotMinimap extends EntryListWidget {
 
             RenderSystem.depthFunc(OpenGL.GL11_GL_LEQUAL);
             RenderSystem.disableDepthTest();
-            OpenGL.glEnable(OpenGL.GL11_GL_BLEND);
+            RenderSystem.enableBlend();
             RenderSystem.blendFuncSeparate(OpenGL.GL11_GL_SRC_ALPHA, OpenGL.GL11_GL_ONE_MINUS_SRC_ALPHA, 0, 1);
             RenderSystem.setShader(GameRenderer::getPositionTexColorProgram);
             RenderSystem.setShaderTexture(0, Screen.OPTIONS_BACKGROUND_TEXTURE);
@@ -135,7 +135,7 @@ public abstract class GuiSlotMinimap extends EntryListWidget {
 
         renderDecorations(drawContext, mouseX, mouseY);
 
-        OpenGL.glDisable(OpenGL.GL11_GL_BLEND);
+        RenderSystem.disableBlend();
     }
 
     public int getRowWidth() { return slotWidth; }

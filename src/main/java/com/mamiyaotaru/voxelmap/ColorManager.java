@@ -243,10 +243,10 @@ public class ColorManager {
         float rotX = rotations.x();
         float rotY = rotations.y();
         float rotZ = rotations.z();
-        OpenGL.glBindTexture(OpenGL.GL11_GL_TEXTURE_2D, OpenGL.Utils.fboTextureId);
+        RenderSystem.bindTexture(OpenGL.Utils.fboTextureId);
         int width = GlStateManager._getTexLevelParameter(OpenGL.GL11_GL_TEXTURE_2D, 0, OpenGL.GL11_GL_TRANSFORM_BIT);
         int height = GlStateManager._getTexLevelParameter(OpenGL.GL11_GL_TEXTURE_2D, 0, OpenGL.GL11_GL_TEXTURE_HEIGHT);
-        OpenGL.glBindTexture(OpenGL.GL11_GL_TEXTURE_2D, 0);
+        RenderSystem.bindTexture(0);
         RenderSystem.viewport(0, 0, width, height);
         Matrix4f minimapProjectionMatrix = RenderSystem.getProjectionMatrix();
         Matrix4f matrix4f = new Matrix4f().ortho(0.0F, width, height, 0.0F, 1000.0F, 3000.0F);
@@ -258,9 +258,9 @@ public class ColorManager {
         RenderSystem.applyModelViewMatrix();
         OpenGL.Utils.bindFramebuffer();
         RenderSystem.depthMask(true);
-        OpenGL.glEnable(OpenGL.GL11_GL_DEPTH_TEST);
-        OpenGL.glEnable(OpenGL.GL11_GL_BLEND);
-        OpenGL.glDisable(OpenGL.GL11_GL_CULL_FACE);
+        RenderSystem.enableDepthTest();
+        RenderSystem.enableBlend();
+        RenderSystem.disableCull();
         RenderSystem.blendFunc(OpenGL.GL11_GL_SRC_ALPHA, OpenGL.GL11_GL_ONE_MINUS_SRC_ALPHA);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.clearColor(1.0F, 1.0F, 1.0F, 0.0F);
@@ -292,8 +292,8 @@ public class ColorManager {
         matrixStack.pop();
         matrixStack.pop();
         RenderSystem.applyModelViewMatrix();
-        OpenGL.glEnable(OpenGL.GL11_GL_CULL_FACE);
-        OpenGL.glDisable(OpenGL.GL11_GL_DEPTH_TEST);
+        RenderSystem.enableCull();
+        RenderSystem.disableDepthTest();
         RenderSystem.depthMask(false);
         OpenGL.Utils.unbindFramebuffer();
         RenderSystem.setProjectionMatrix(minimapProjectionMatrix, VertexSorter.BY_DISTANCE);

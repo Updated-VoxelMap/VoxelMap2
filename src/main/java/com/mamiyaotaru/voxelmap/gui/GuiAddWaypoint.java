@@ -341,7 +341,7 @@ public class GuiAddWaypoint extends GuiScreenMinimap implements IPopupGuiScreen 
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
             drawContext.drawTexture(blank, this.getWidth() / 2 - displayWidth / 2, this.getHeight() / 2 - displayHeight / 2, 0, 0, displayWidth, displayHeight);
             RenderSystem.setShaderColor(this.waypoint.red, this.waypoint.green, this.waypoint.blue, 1.0F);
-            OpenGL.glEnable(OpenGL.GL11_GL_BLEND);
+            RenderSystem.enableBlend();
             RenderSystem.setShader(GameRenderer::getPositionTexProgram);
             RenderSystem.setShaderTexture(0, chooser.getGlId());
             RenderSystem.texParameter(OpenGL.GL11_GL_TEXTURE_2D, OpenGL.GL11_GL_TEXTURE_MIN_FILTER, OpenGL.GL11_GL_LINEAR);
@@ -356,7 +356,7 @@ public class GuiAddWaypoint extends GuiScreenMinimap implements IPopupGuiScreen 
                 }
             }
             RenderSystem.enableDepthTest();
-            OpenGL.glDisable(OpenGL.GL11_GL_BLEND);
+            RenderSystem.disableBlend();
             RenderSystem.texParameter(OpenGL.GL11_GL_TEXTURE_2D, OpenGL.GL11_GL_TEXTURE_MIN_FILTER, OpenGL.GL11_GL_NEAREST);
         }
 

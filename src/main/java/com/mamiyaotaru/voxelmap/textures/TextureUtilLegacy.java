@@ -71,7 +71,7 @@ public final class TextureUtilLegacy {
     }
 
     static void bindTexture(int id) {
-        OpenGL.glBindTexture(OpenGL.GL11_GL_TEXTURE_2D, id);
+        RenderSystem.bindTexture(id);
     }
 
     public static void uploadTextureMipmap(int[][] textureData, int width, int height, int originX, int originY, boolean blurred, boolean clamped) {

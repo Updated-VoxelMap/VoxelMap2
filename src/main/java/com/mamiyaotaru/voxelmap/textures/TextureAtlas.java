@@ -126,7 +126,7 @@ public class TextureAtlas extends AbstractTexture {
         this.stitcher.doStitchNew();
 
         if (oldWidth == this.stitcher.getCurrentImageWidth() && oldHeight == this.stitcher.getCurrentImageHeight()) {
-            OpenGL.glBindTexture(OpenGL.GL11_GL_TEXTURE_2D, this.glId);
+            RenderSystem.bindTexture(this.glId);
         } else {
             VoxelConstants.getLogger().info("Resized to: {}x{} {}-atlas", new Object[]{this.stitcher.getCurrentImageWidth(), this.stitcher.getCurrentImageHeight(), this.basePath});
             TextureUtilLegacy.allocateTextureImpl(this.getGlId(), 0, this.stitcher.getCurrentImageWidth(), this.stitcher.getCurrentImageHeight());

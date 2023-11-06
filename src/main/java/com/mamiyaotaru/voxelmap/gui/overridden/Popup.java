@@ -92,7 +92,7 @@ public class Popup {
     public void drawPopup(DrawContext drawContext, int mouseX, int mouseY) {
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder vertexBuffer = tessellator.getBuffer();
-        OpenGL.glDisable(OpenGL.GL11_GL_DEPTH_TEST);
+        RenderSystem.disableDepthTest();
         RenderSystem.setShader(GameRenderer::getPositionTexColorProgram);
         RenderSystem.setShaderTexture(0, Screen.OPTIONS_BACKGROUND_TEXTURE);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
@@ -103,7 +103,7 @@ public class Popup {
         vertexBuffer.vertex(this.x + this.w, this.y, 0.0).texture((this.x + this.w) / var6, (this.y + this.h) / var6).color(64, 64, 64, 255).next();
         vertexBuffer.vertex(this.x, this.y, 0.0).texture(this.x / var6, (this.y + this.h) / var6).color(64, 64, 64, 255).next();
         tessellator.draw();
-        OpenGL.glEnable(OpenGL.GL11_GL_BLEND);
+        RenderSystem.enableBlend();
         RenderSystem.blendFunc(OpenGL.GL11_GL_SRC_ALPHA, OpenGL.GL11_GL_ONE_MINUS_SRC_ALPHA);
         RenderSystem.setShader(GameRenderer::getPositionColorProgram);
         vertexBuffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
@@ -131,7 +131,7 @@ public class Popup {
         vertexBuffer.vertex(this.x + this.w, this.y, 0.0).color(0, 0, 0, 255).next();
         tessellator.draw();
         RenderSystem.setShader(GameRenderer::getPositionTexProgram);
-        OpenGL.glDisable(OpenGL.GL11_GL_BLEND);
+        RenderSystem.disableBlend();
 
         for (int t = 0; t < this.entries.length; ++t) {
             int color = !this.entries[t].enabled ? 10526880 : (mouseX >= this.x && mouseX <= this.x + this.w && mouseY >= this.y + t * 20 && mouseY <= this.y + (t + 1) * 20 ? 16777120 : 14737632);

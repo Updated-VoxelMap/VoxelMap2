@@ -161,7 +161,7 @@ class GuiSlotWaypoints extends GuiSlotMinimap {
                 int y1 = y - 1;
                 RenderSystem.setShaderColor(1.0F, 0.0F, 0.0F, 1.0F);
                 TextureAtlas textureAtlas = this.parentGui.waypointManager.getTextureAtlas();
-                OpenGL.glBindTexture(OpenGL.GL11_GL_TEXTURE_2D, textureAtlas.getGlId());
+                RenderSystem.bindTexture(textureAtlas.getGlId());
                 Sprite icon = textureAtlas.getAtlasSprite("voxelmap:images/waypoints/target.png");
                 GuiSlotWaypoints.this.drawTexturedModalRect(x1, y1, icon, 16, 16);
             }

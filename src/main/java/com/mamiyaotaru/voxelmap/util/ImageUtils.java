@@ -24,7 +24,7 @@ import java.util.Arrays;
 
 public class ImageUtils {
     public static void saveImage(String name, int glid, int maxMipmapLevel, int width, int height) {
-        OpenGL.glBindTexture(OpenGL.GL11_GL_TEXTURE_2D, glid);
+        RenderSystem.bindTexture(glid);
         RenderSystem.pixelStore(OpenGL.GL11_GL_PACK_ALIGNMENT, 1);
         RenderSystem.pixelStore(OpenGL.GL11_GL_UNPACK_ALIGNMENT, 1);
 
@@ -82,7 +82,7 @@ public class ImageUtils {
     }
 
     public static BufferedImage createBufferedImageFromGLID(int id) {
-        OpenGL.glBindTexture(OpenGL.GL11_GL_TEXTURE_2D, id);
+        RenderSystem.bindTexture(id);
         return createBufferedImageFromCurrentGLImage();
     }
 
@@ -115,7 +115,7 @@ public class ImageUtils {
                 imageHeight /= 2;
                 size = (long) imageWidth * imageHeight * 4L;
             }
-            int glid = OpenGL.glGetInteger(OpenGL.GL11_GL_TEXTURE_BINDING_2D);
+            int glid = GlStateManager._getInteger(OpenGL.GL11_GL_TEXTURE_BINDING_2D);
             image = new BufferedImage(imageWidth, imageHeight, 6);
             int fboWidth = 512;
             int fboHeight = 512;
@@ -132,7 +132,7 @@ public class ImageUtils {
             OpenGL.Utils.bindFramebuffer();
             for (int startX = 0; startX + fboWidth < imageWidth; startX += fboWidth) {
                 for (int startY = 0; startY + fboWidth < imageHeight; startY += fboHeight) {
-                    OpenGL.glBindTexture(OpenGL.GL11_GL_TEXTURE_2D, glid);
+                    RenderSystem.bindTexture(glid);
                     RenderSystem.clearColor(0.0F, 0.0F, 0.0F, 0.0F);
                     RenderSystem.clear(OpenGL.GL11_GL_COLOR_BUFFER_BIT | OpenGL.GL11_GL_DEPTH_BUFFER_BIT, false);
                     OpenGL.Utils.drawPre();
@@ -141,7 +141,7 @@ public class ImageUtils {
                     OpenGL.Utils.ldrawthree(fboWidth, 0.0, 1.0, ((float) startX + fboWidth) / imageWidth, ((float) startY + fboHeight) / imageHeight);
                     OpenGL.Utils.ldrawthree(0.0, 0.0, 1.0, (float) startX / imageWidth, ((float) startY + fboHeight) / imageHeight);
                     OpenGL.Utils.drawPost();
-                    OpenGL.glBindTexture(OpenGL.GL11_GL_TEXTURE_2D, OpenGL.Utils.fboTextureId);
+                    RenderSystem.bindTexture(OpenGL.Utils.fboTextureId);
                     byteBuffer.position(0);
                     OpenGL.glGetTexImage(OpenGL.GL11_GL_TEXTURE_2D, 0, OpenGL.GL11_GL_RGBA, OpenGL.GL11_GL_UNSIGNED_BYTE, byteBuffer);
                     byteBuffer.position(0);

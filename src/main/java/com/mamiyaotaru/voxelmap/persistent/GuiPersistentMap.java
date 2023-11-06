@@ -173,7 +173,7 @@ public class GuiPersistentMap extends PopupGuiScreen implements IGuiWaypoints {
 
         if (imageData != null) {
             gotSkin = true;
-            OpenGL.glBindTexture(OpenGL.GL11_GL_TEXTURE_2D, imageData.getGlId());
+            RenderSystem.bindTexture(imageData.getGlId());
         } else {
             ++skinTries;
             OpenGL.Utils.img(skinLocation);
@@ -782,7 +782,7 @@ public class GuiPersistentMap extends PopupGuiScreen implements IGuiWaypoints {
                 int minimumSize = (int) (20.0F * this.scScale / biomeScaleX);
                 minimumSize *= minimumSize;
                 ArrayList<AbstractMapData.BiomeLabel> labels = this.biomeMapData.getBiomeLabels();
-                OpenGL.glDisable(OpenGL.GL11_GL_DEPTH_TEST);
+                RenderSystem.disableDepthTest();
 
                 for (AbstractMapData.BiomeLabel biomeLabel : labels) {
                     if (biomeLabel.segmentSize > minimumSize) {
@@ -793,7 +793,7 @@ public class GuiPersistentMap extends PopupGuiScreen implements IGuiWaypoints {
                     }
                 }
 
-                OpenGL.glEnable(OpenGL.GL11_GL_DEPTH_TEST);
+                RenderSystem.enableDepthTest();
             }
         }
 
@@ -916,7 +916,7 @@ public class GuiPersistentMap extends PopupGuiScreen implements IGuiWaypoints {
                     this.write(drawContext, name, ptX * this.mapToGui / fontScale - m, ptZ * this.mapToGui / fontScale + 16.0F / this.scScale / fontScale, !pt.enabled && !target && !hover ? 1442840575 : 16777215);
                     matrixStack.pop();
                     RenderSystem.applyModelViewMatrix();
-                    OpenGL.glEnable(OpenGL.GL11_GL_BLEND);
+                    RenderSystem.enableBlend();
                 }
             }
         }

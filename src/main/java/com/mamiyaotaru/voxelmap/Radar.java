@@ -1224,10 +1224,10 @@ public class Radar implements IRadar {
     private boolean drawModel(float scale, int captureDepth, LivingEntity livingEntity, Direction facing, Model model, ModelPartWithResourceLocation[] headBits) {
         boolean failed = false;
         float size = 64.0F * scale;
-        OpenGL.glBindTexture(OpenGL.GL11_GL_TEXTURE_2D, OpenGL.Utils.fboTextureId);
+        RenderSystem.bindTexture(OpenGL.Utils.fboTextureId);
         int width = GlStateManager._getTexLevelParameter(OpenGL.GL11_GL_TEXTURE_2D, 0, OpenGL.GL11_GL_TRANSFORM_BIT);
         int height = GlStateManager._getTexLevelParameter(OpenGL.GL11_GL_TEXTURE_2D, 0, OpenGL.GL11_GL_TEXTURE_HEIGHT);
-        OpenGL.glBindTexture(OpenGL.GL11_GL_TEXTURE_2D, 0);
+        RenderSystem.bindTexture(0);
         RenderSystem.viewport(0, 0, width, height);
         Matrix4f minimapProjectionMatrix = RenderSystem.getProjectionMatrix();
         Matrix4f matrix4f = new Matrix4f().ortho(0.0F, width, height, 0.0F, 1000.0F, 3000.0F);
@@ -1239,9 +1239,9 @@ public class Radar implements IRadar {
         RenderSystem.applyModelViewMatrix();
         OpenGL.Utils.bindFramebuffer();
         RenderSystem.depthMask(true);
-        OpenGL.glEnable(OpenGL.GL11_GL_DEPTH_TEST);
-        OpenGL.glEnable(OpenGL.GL11_GL_BLEND);
-        OpenGL.glDisable(OpenGL.GL11_GL_CULL_FACE);
+        RenderSystem.enableDepthTest();
+        RenderSystem.enableBlend();
+        RenderSystem.disableCull();
         RenderSystem.clearColor(1.0F, 1.0F, 1.0F, 0.0F);
         RenderSystem.clearDepth(1.0);
         RenderSystem.clear(OpenGL.GL11_GL_COLOR_BUFFER_BIT | OpenGL.GL11_GL_DEPTH_BUFFER_BIT, false);
@@ -1306,8 +1306,8 @@ public class Radar implements IRadar {
         matrixStack.pop();
         matrixStack.pop();
         RenderSystem.applyModelViewMatrix();
-        OpenGL.glEnable(OpenGL.GL11_GL_CULL_FACE);
-        OpenGL.glDisable(OpenGL.GL11_GL_DEPTH_TEST);
+        RenderSystem.enableCull();
+        RenderSystem.disableDepthTest();
         RenderSystem.depthMask(false);
         OpenGL.Utils.unbindFramebuffer();
         RenderSystem.setProjectionMatrix(minimapProjectionMatrix, VertexSorter.BY_DISTANCE);
@@ -1611,7 +1611,7 @@ public class Radar implements IRadar {
         for (Contact contact : this.contacts) {
             RenderSystem.setShader(GameRenderer::getPositionTexProgram);
             RenderSystem.setShaderTexture(0, this.textureAtlas.getGlId());
-            OpenGL.glEnable(OpenGL.GL11_GL_BLEND);
+            RenderSystem.enableBlend();
             RenderSystem.blendFunc(OpenGL.GL11_GL_SRC_ALPHA, OpenGL.GL11_GL_ONE_MINUS_SRC_ALPHA);
 
             RenderSystem.setShader(GameRenderer::getPositionTexProgram);
