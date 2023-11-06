@@ -88,7 +88,7 @@ class GuiSlotDimensions extends GuiSlotMinimap {
             }
 
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-            OpenGL.Utils.img2("textures/gui/container/beacon.png");
+            RenderSystem.setShaderTexture(0, new Identifier("textures/gui/container/beacon.png"));
             int xOffset = this.parentGui.waypoint.dimensions.contains(this.dim) ? 91 : 113;
             int yOffset = 222;
             drawContext.drawTexture(new Identifier("textures/gui/container/beacon.png"), x + width - iconWidth, y - 2, xOffset, yOffset, 16, 16);

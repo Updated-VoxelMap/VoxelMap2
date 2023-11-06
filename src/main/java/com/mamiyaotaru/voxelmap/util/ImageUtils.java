@@ -123,7 +123,7 @@ public class ImageUtils {
             byte[] bytes = new byte[byteBuffer.remaining()];
             OpenGL.glPushAttrib(OpenGL.GL11_GL_TRANSFORM_BIT);
             RenderSystem.backupProjectionMatrix();
-            OpenGL.glViewport(0, 0, fboWidth, fboHeight);
+            RenderSystem.viewport(0, 0, fboWidth, fboHeight);
             Matrix4f matrix4f = new Matrix4f().ortho(fboWidth, (-(fboHeight)), 1000.0F, 3000.0F, -1.0f, 1.0f);
             RenderSystem.setProjectionMatrix(matrix4f, VertexSorter.BY_DISTANCE);
             MatrixStack matrixStack = RenderSystem.getModelViewStack();
@@ -132,7 +132,7 @@ public class ImageUtils {
             OpenGL.Utils.bindFramebuffer();
             for (int startX = 0; startX + fboWidth < imageWidth; startX += fboWidth) {
                 for (int startY = 0; startY + fboWidth < imageHeight; startY += fboHeight) {
-                    OpenGL.Utils.disp(glid);
+                    OpenGL.glBindTexture(OpenGL.GL11_GL_TEXTURE_2D, glid);
                     RenderSystem.clearColor(0.0F, 0.0F, 0.0F, 0.0F);
                     RenderSystem.clear(OpenGL.GL11_GL_COLOR_BUFFER_BIT | OpenGL.GL11_GL_DEPTH_BUFFER_BIT, false);
                     OpenGL.Utils.drawPre();
@@ -141,7 +141,7 @@ public class ImageUtils {
                     OpenGL.Utils.ldrawthree(fboWidth, 0.0, 1.0, ((float) startX + fboWidth) / imageWidth, ((float) startY + fboHeight) / imageHeight);
                     OpenGL.Utils.ldrawthree(0.0, 0.0, 1.0, (float) startX / imageWidth, ((float) startY + fboHeight) / imageHeight);
                     OpenGL.Utils.drawPost();
-                    OpenGL.Utils.disp(OpenGL.Utils.fboTextureId);
+                    OpenGL.glBindTexture(OpenGL.GL11_GL_TEXTURE_2D, OpenGL.Utils.fboTextureId);
                     byteBuffer.position(0);
                     OpenGL.glGetTexImage(OpenGL.GL11_GL_TEXTURE_2D, 0, OpenGL.GL11_GL_RGBA, OpenGL.GL11_GL_UNSIGNED_BYTE, byteBuffer);
                     byteBuffer.position(0);
@@ -164,7 +164,7 @@ public class ImageUtils {
             OpenGL.Utils.unbindFramebuffer();
             RenderSystem.restoreProjectionMatrix();
             OpenGL.glPopAttrib();
-            OpenGL.glViewport(0, 0, VoxelConstants.getMinecraft().getWindow().getFramebufferWidth(), VoxelConstants.getMinecraft().getWindow().getFramebufferHeight());
+            RenderSystem.viewport(0, 0, VoxelConstants.getMinecraft().getWindow().getFramebufferWidth(), VoxelConstants.getMinecraft().getWindow().getFramebufferHeight());
         }
         return image;
     }

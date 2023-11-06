@@ -107,10 +107,6 @@ public final class OpenGL {
         }
     }
 
-    public static void glTexParameterf(int target, int pname, float param) { GlStateManager._texParameter(target, pname, param); }
-
-    public static void glViewport(int x, int y, int width, int height) { RenderSystem.viewport(x, y, width, height); }
-
     public static void glBindTexture(int target, int texture) {
         if (target == GL11_GL_TEXTURE_2D) {
             RenderSystem.bindTexture(texture);
@@ -182,9 +178,9 @@ public final class OpenGL {
             glBindFramebuffer(GL30_GL_FRAMEBUFFER, fboId);
             glBindTexture(GL11_GL_TEXTURE_2D, fboTextureId);
             RenderSystem.texParameter(GL11_GL_TEXTURE_2D, GL11_GL_TEXTURE_WRAP_S, GL12_GL_CLAMP_TO_EDGE);
-            glTexParameterf(GL11_GL_TEXTURE_2D, GL11_GL_TEXTURE_WRAP_T, GL12_GL_CLAMP_TO_EDGE);
-            glTexParameterf(GL11_GL_TEXTURE_2D, GL11_GL_TEXTURE_MIN_FILTER, GL11_GL_LINEAR);
-            glTexParameterf(GL11_GL_TEXTURE_2D, GL11_GL_TEXTURE_MAG_FILTER, GL11_GL_LINEAR);
+            GlStateManager._texParameter(GL11_GL_TEXTURE_2D, GL11_GL_TEXTURE_WRAP_T, GL12_GL_CLAMP_TO_EDGE);
+            GlStateManager._texParameter(GL11_GL_TEXTURE_2D, GL11_GL_TEXTURE_MIN_FILTER, GL11_GL_LINEAR);
+            GlStateManager._texParameter(GL11_GL_TEXTURE_2D, GL11_GL_TEXTURE_MAG_FILTER, GL11_GL_LINEAR);
             glTexImage2D(GL11_GL_TEXTURE_2D, 0, GL11_GL_RGBA, width, height, 0, GL11_GL_RGBA, GL11_GL_BYTE, buffer);
             glFramebufferTexture2D(GL30_GL_FRAMEBUFFER, GL30_GL_COLOR_ATTACHMENT0, GL11_GL_TEXTURE_2D, fboTextureId, 0);
 
@@ -272,15 +268,9 @@ public final class OpenGL {
             return glId;
         }
 
-        public static void img2(String param) { img2(new Identifier(param)); }
-
         public static void img(Identifier param) { textureManager.bindTexture(param); }
 
-        public static void img2(Identifier param) { RenderSystem.setShaderTexture(0, param); }
-
         public static void disp(int param) { glBindTexture(GL11_GL_TEXTURE_2D, param); }
-
-        public static void disp2(int param) { RenderSystem.setShaderTexture(0, param); }
 
         public static void register(Identifier resource, AbstractTexture image) { textureManager.registerTexture(resource, image); }
 

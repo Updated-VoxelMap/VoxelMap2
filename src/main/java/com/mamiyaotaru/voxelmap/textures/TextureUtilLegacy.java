@@ -47,7 +47,7 @@ public final class TextureUtilLegacy {
             RenderSystem.texParameter(OpenGL.GL11_GL_TEXTURE_2D, 33085, mipmapLevels);
             RenderSystem.texParameter(OpenGL.GL11_GL_TEXTURE_2D, 33082, 0);
             RenderSystem.texParameter(OpenGL.GL11_GL_TEXTURE_2D, 33083, mipmapLevels);
-            OpenGL.glTexParameterf(OpenGL.GL11_GL_TEXTURE_2D, 34049, 0.0F);
+            GlStateManager._texParameter(OpenGL.GL11_GL_TEXTURE_2D, 34049, 0.0F);
         }
 
         for (int i = 0; i <= mipmapLevels; ++i) {

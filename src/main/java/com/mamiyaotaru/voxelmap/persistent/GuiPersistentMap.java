@@ -173,7 +173,7 @@ public class GuiPersistentMap extends PopupGuiScreen implements IGuiWaypoints {
 
         if (imageData != null) {
             gotSkin = true;
-            OpenGL.Utils.disp(imageData.getGlId());
+            OpenGL.glBindTexture(OpenGL.GL11_GL_TEXTURE_2D, imageData.getGlId());
         } else {
             ++skinTries;
             OpenGL.Utils.img(skinLocation);
@@ -639,14 +639,14 @@ public class GuiPersistentMap extends PopupGuiScreen implements IGuiWaypoints {
         RenderSystem.setShader(GameRenderer::getPositionTexProgram);
         this.backGroundImageInfo = this.waypointManager.getBackgroundImageInfo();
         if (this.backGroundImageInfo != null) {
-            OpenGL.Utils.disp2(this.backGroundImageInfo.glid);
+            RenderSystem.setShaderTexture(0, this.backGroundImageInfo.glid);
             this.drawTexturedModalRect(this.backGroundImageInfo.left * this.mapToGui, this.backGroundImageInfo.top * this.mapToGui, this.backGroundImageInfo.width * this.mapToGui, this.backGroundImageInfo.height * this.mapToGui);
         }
 
         for (CachedRegion region : this.regions) {
             int glid = region.getGLID();
             if (glid != 0) {
-                OpenGL.Utils.disp2(glid);
+                RenderSystem.setShaderTexture(0, glid);
                 RenderSystem.bindTextureForSetup(glid);
                 if (mapOptions.filtering) {
                     RenderSystem.texParameter(OpenGL.GL11_GL_TEXTURE_2D, OpenGL.GL11_GL_TEXTURE_MIN_FILTER, OpenGL.GL11_GL_LINEAR_MIPMAP_LINEAR);
@@ -693,7 +693,7 @@ public class GuiPersistentMap extends PopupGuiScreen implements IGuiWaypoints {
 
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShader(GameRenderer::getPositionTexProgram);
-        OpenGL.Utils.disp2(playerGLID);
+        RenderSystem.setShaderTexture(0, playerGLID);
         RenderSystem.texParameter(OpenGL.GL11_GL_TEXTURE_2D, OpenGL.GL11_GL_TEXTURE_MIN_FILTER, OpenGL.GL11_GL_LINEAR);
         RenderSystem.texParameter(OpenGL.GL11_GL_TEXTURE_2D, OpenGL.GL11_GL_TEXTURE_MAG_FILTER, OpenGL.GL11_GL_LINEAR);
         float playerX = (float) GameVariableAccessShim.xCoordDouble();
@@ -873,7 +873,7 @@ public class GuiPersistentMap extends PopupGuiScreen implements IGuiWaypoints {
                 boolean target = false;
                 RenderSystem.setShader(GameRenderer::getPositionTexProgram);
                 TextureAtlas atlas = VoxelConstants.getVoxelMapInstance().getWaypointManager().getTextureAtlas();
-                OpenGL.Utils.disp2(atlas.getGlId());
+                RenderSystem.setShaderTexture(0, atlas.getGlId());
                 if (icon == null) {
                     icon = atlas.getAtlasSprite("voxelmap:images/waypoints/waypoint" + pt.imageSuffix + ".png");
                     if (icon == atlas.getMissingImage()) {

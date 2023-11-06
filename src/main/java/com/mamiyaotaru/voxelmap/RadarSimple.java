@@ -182,7 +182,7 @@ public class RadarSimple implements IRadar {
 
     public void renderMapMobs(MatrixStack matrixStack, int x, int y) {
         double max = this.layoutVariables.zoomScaleAdjusted * 32.0;
-        OpenGL.Utils.disp2(this.textureAtlas.getGlId());
+        RenderSystem.setShaderTexture(0, this.textureAtlas.getGlId());
 
         for (Contact contact : this.contacts) {
             contact.updateLocation();

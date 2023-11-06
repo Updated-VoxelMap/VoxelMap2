@@ -1228,7 +1228,7 @@ public class Radar implements IRadar {
         int width = GlStateManager._getTexLevelParameter(OpenGL.GL11_GL_TEXTURE_2D, 0, OpenGL.GL11_GL_TRANSFORM_BIT);
         int height = GlStateManager._getTexLevelParameter(OpenGL.GL11_GL_TEXTURE_2D, 0, OpenGL.GL11_GL_TEXTURE_HEIGHT);
         OpenGL.glBindTexture(OpenGL.GL11_GL_TEXTURE_2D, 0);
-        OpenGL.glViewport(0, 0, width, height);
+        RenderSystem.viewport(0, 0, width, height);
         Matrix4f minimapProjectionMatrix = RenderSystem.getProjectionMatrix();
         Matrix4f matrix4f = new Matrix4f().ortho(0.0F, width, height, 0.0F, 1000.0F, 3000.0F);
         RenderSystem.setProjectionMatrix(matrix4f, VertexSorter.BY_DISTANCE);
@@ -1311,7 +1311,7 @@ public class Radar implements IRadar {
         RenderSystem.depthMask(false);
         OpenGL.Utils.unbindFramebuffer();
         RenderSystem.setProjectionMatrix(minimapProjectionMatrix, VertexSorter.BY_DISTANCE);
-        OpenGL.glViewport(0, 0, VoxelConstants.getMinecraft().getWindow().getFramebufferWidth(), VoxelConstants.getMinecraft().getWindow().getFramebufferHeight());
+        RenderSystem.viewport(0, 0, VoxelConstants.getMinecraft().getWindow().getFramebufferWidth(), VoxelConstants.getMinecraft().getWindow().getFramebufferHeight());
         return !failed;
     }
 
@@ -1610,7 +1610,7 @@ public class Radar implements IRadar {
 
         for (Contact contact : this.contacts) {
             RenderSystem.setShader(GameRenderer::getPositionTexProgram);
-            OpenGL.Utils.disp2(this.textureAtlas.getGlId());
+            RenderSystem.setShaderTexture(0, this.textureAtlas.getGlId());
             OpenGL.glEnable(OpenGL.GL11_GL_BLEND);
             RenderSystem.blendFunc(OpenGL.GL11_GL_SRC_ALPHA, OpenGL.GL11_GL_ONE_MINUS_SRC_ALPHA);
 
@@ -1706,7 +1706,7 @@ public class Radar implements IRadar {
                                 this.loadTexturePackIcons();
                             }
 
-                            OpenGL.Utils.disp2(this.textureAtlas.getGlId());
+                            RenderSystem.setShaderTexture(0, this.textureAtlas.getGlId());
                         }
 
                         this.newMobs = false;

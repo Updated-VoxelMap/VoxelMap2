@@ -497,7 +497,7 @@ public class Map implements Runnable, IChangeObserver {
         try {
             if (this.world != null) {
                 if (this.needLightmapRefresh && VoxelConstants.getElapsedTicks() != this.tickWithLightChange && !VoxelConstants.getMinecraft().isPaused() || this.options.realTimeTorches) {
-                    OpenGL.Utils.disp(this.lightmapTexture.getGlId());
+                    OpenGL.glBindTexture(OpenGL.GL11_GL_TEXTURE_2D, this.lightmapTexture.getGlId());
                     ByteBuffer byteBuffer = ByteBuffer.allocateDirect(1024).order(ByteOrder.nativeOrder());
                     OpenGL.glGetTexImage(OpenGL.GL11_GL_TEXTURE_2D, 0, OpenGL.GL11_GL_RGBA, OpenGL.GL11_GL_UNSIGNED_BYTE, byteBuffer);
 
@@ -1549,7 +1549,7 @@ public class Map implements Runnable, IChangeObserver {
         Matrix4f matrix4f = new Matrix4f().ortho(0.0F, 512.0F, 512.0F, 0.0F, 1000.0F, 3000.0F);
         RenderSystem.setProjectionMatrix(matrix4f, VertexSorter.BY_DISTANCE);
         OpenGL.Utils.bindFramebuffer();
-        OpenGL.glViewport(0, 0, 512, 512);
+        RenderSystem.viewport(0, 0, 512, 512);
         matrixStack.push();
         matrixStack.loadIdentity();
         matrixStack.translate(0.0, 0.0, -2000.0);
@@ -1559,7 +1559,7 @@ public class Map implements Runnable, IChangeObserver {
         RenderSystem.clearColor(0.0F, 0.0F, 0.0F, 0.0F);
         RenderSystem.clear(OpenGL.GL11_GL_COLOR_BUFFER_BIT, false);
         RenderSystem.blendFunc(OpenGL.GL11_GL_SRC_ALPHA, 0);
-        OpenGL.Utils.img2(this.options.squareMap ? this.squareStencil : this.circleStencil);
+        RenderSystem.setShaderTexture(0, this.options.squareMap ? this.squareStencil : this.circleStencil);
         OpenGL.Utils.drawPre();
         OpenGL.Utils.ldrawthree(256.0F - 256.0F / scale, 256.0F + 256.0F / scale, 1.0, 0.0F, 0.0F);
         OpenGL.Utils.ldrawthree((256.0F + 256.0F / scale), 256.0F + 256.0F / scale, 1.0, 1.0F, 0.0F);
@@ -1583,7 +1583,7 @@ public class Map implements Runnable, IChangeObserver {
         this.percentY = (float) (GameVariableAccessShim.zCoordDouble() - this.lastImageZ);
         this.percentX *= multi;
         this.percentY *= multi;
-        OpenGL.Utils.disp2(this.mapImages[this.zoom].getIndex());
+        RenderSystem.setShaderTexture(0, this.mapImages[this.zoom].getIndex());
         RenderSystem.texParameter(OpenGL.GL11_GL_TEXTURE_2D, OpenGL.GL11_GL_TEXTURE_MIN_FILTER, OpenGL.GL11_GL_LINEAR_MIPMAP_LINEAR);
         RenderSystem.texParameter(OpenGL.GL11_GL_TEXTURE_2D, OpenGL.GL11_GL_TEXTURE_MAG_FILTER, OpenGL.GL11_GL_LINEAR);
         matrixStack.push();
@@ -1608,12 +1608,12 @@ public class Map implements Runnable, IChangeObserver {
         RenderSystem.depthMask(true);
         OpenGL.glEnable(OpenGL.GL11_GL_DEPTH_TEST);
         OpenGL.Utils.unbindFramebuffer();
-        OpenGL.glViewport(0, 0, VoxelConstants.getMinecraft().getWindow().getFramebufferWidth(), VoxelConstants.getMinecraft().getWindow().getFramebufferHeight());
+        RenderSystem.viewport(0, 0, VoxelConstants.getMinecraft().getWindow().getFramebufferWidth(), VoxelConstants.getMinecraft().getWindow().getFramebufferHeight());
         matrixStack.pop();
         RenderSystem.setProjectionMatrix(minimapProjectionMatrix, VertexSorter.BY_DISTANCE);
         matrixStack.push();
         RenderSystem.blendFunc(OpenGL.GL11_GL_SRC_ALPHA, 0);
-        OpenGL.Utils.disp2(OpenGL.Utils.fboTextureId);
+        RenderSystem.setShaderTexture(0, OpenGL.Utils.fboTextureId);
 
         double guiScale = (double) VoxelConstants.getMinecraft().getWindow().getFramebufferWidth() / this.scWidth;
         OpenGL.glEnable(3089);
@@ -1635,7 +1635,7 @@ public class Map implements Runnable, IChangeObserver {
         double lastXDouble = GameVariableAccessShim.xCoordDouble();
         double lastZDouble = GameVariableAccessShim.zCoordDouble();
         TextureAtlas textureAtlas = VoxelConstants.getVoxelMapInstance().getWaypointManager().getTextureAtlas();
-        OpenGL.Utils.disp2(textureAtlas.getGlId());
+        RenderSystem.setShaderTexture(0, textureAtlas.getGlId());
         OpenGL.glEnable(OpenGL.GL11_GL_BLEND);
         RenderSystem.blendFunc(OpenGL.GL11_GL_SRC_ALPHA, OpenGL.GL11_GL_ONE_MINUS_SRC_ALPHA);
         OpenGL.glDisable(OpenGL.GL11_GL_DEPTH_TEST);
@@ -1791,7 +1791,7 @@ public class Map implements Runnable, IChangeObserver {
             matrixStack.push();
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
             RenderSystem.blendFunc(OpenGL.GL11_GL_SRC_ALPHA, OpenGL.GL11_GL_ONE_MINUS_SRC_ALPHA);
-            OpenGL.Utils.img2(this.arrowResourceLocation);
+            RenderSystem.setShaderTexture(0, this.arrowResourceLocation);
             RenderSystem.texParameter(OpenGL.GL11_GL_TEXTURE_2D, OpenGL.GL11_GL_TEXTURE_MIN_FILTER, OpenGL.GL11_GL_LINEAR);
             RenderSystem.texParameter(OpenGL.GL11_GL_TEXTURE_2D, OpenGL.GL11_GL_TEXTURE_MAG_FILTER, OpenGL.GL11_GL_LINEAR);
             matrixStack.translate(x, y, 0.0);
@@ -1822,7 +1822,7 @@ public class Map implements Runnable, IChangeObserver {
         }
 
         RenderSystem.setShader(GameRenderer::getPositionTexProgram);
-        OpenGL.Utils.disp2(this.mapImages[this.zoom].getIndex());
+        RenderSystem.setShaderTexture(0, this.mapImages[this.zoom].getIndex());
         RenderSystem.texParameter(OpenGL.GL11_GL_TEXTURE_2D, OpenGL.GL11_GL_TEXTURE_MIN_FILTER, OpenGL.GL11_GL_LINEAR_MIPMAP_LINEAR);
         RenderSystem.texParameter(OpenGL.GL11_GL_TEXTURE_2D, OpenGL.GL11_GL_TEXTURE_MAG_FILTER, OpenGL.GL11_GL_LINEAR);
         matrixStack.push();
@@ -1874,7 +1874,7 @@ public class Map implements Runnable, IChangeObserver {
 
     private void drawSquareMapFrame(int x, int y) {
         try {
-            OpenGL.Utils.disp2(this.mapImageInt);
+            RenderSystem.setShaderTexture(0, this.mapImageInt);
             RenderSystem.texParameter(OpenGL.GL11_GL_TEXTURE_2D, OpenGL.GL11_GL_TEXTURE_MIN_FILTER, OpenGL.GL11_GL_LINEAR);
             RenderSystem.texParameter(OpenGL.GL11_GL_TEXTURE_2D, OpenGL.GL11_GL_TEXTURE_MAG_FILTER, OpenGL.GL11_GL_LINEAR);
             RenderSystem.texParameter(OpenGL.GL11_GL_TEXTURE_2D, OpenGL.GL11_GL_TEXTURE_WRAP_S, OpenGL.GL12_GL_CLAMP_TO_EDGE);
@@ -1920,7 +1920,7 @@ public class Map implements Runnable, IChangeObserver {
 
     private void drawRoundMapFrame(int x, int y) {
         try {
-            OpenGL.Utils.img2(this.roundmapResourceLocation);
+            RenderSystem.setShaderTexture(0, this.roundmapResourceLocation);
             RenderSystem.texParameter(OpenGL.GL11_GL_TEXTURE_2D, OpenGL.GL11_GL_TEXTURE_MIN_FILTER, OpenGL.GL11_GL_LINEAR);
             RenderSystem.texParameter(OpenGL.GL11_GL_TEXTURE_2D, OpenGL.GL11_GL_TEXTURE_MAG_FILTER, OpenGL.GL11_GL_LINEAR);
             OpenGL.Utils.drawPre();

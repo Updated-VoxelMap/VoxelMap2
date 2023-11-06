@@ -154,14 +154,14 @@ class GuiSlotWaypoints extends GuiSlotMinimap {
             }
 
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-            OpenGL.Utils.img2(this.waypoint.enabled ? GuiSlotWaypoints.this.visibleIconIdentifier : GuiSlotWaypoints.this.invisibleIconIdentifier);
+            RenderSystem.setShaderTexture(0, this.waypoint.enabled ? GuiSlotWaypoints.this.visibleIconIdentifier : GuiSlotWaypoints.this.invisibleIconIdentifier);
             drawContext.drawTexture(this.waypoint.enabled ? GuiSlotWaypoints.this.visibleIconIdentifier : GuiSlotWaypoints.this.invisibleIconIdentifier, x + 198, y - 2, 0, 0.0F, 0.0F, 18, 18, 18, 18);
             if (this.waypoint == this.parentGui.highlightedWaypoint) {
                 int x1 = x + 199;
                 int y1 = y - 1;
                 RenderSystem.setShaderColor(1.0F, 0.0F, 0.0F, 1.0F);
                 TextureAtlas textureAtlas = this.parentGui.waypointManager.getTextureAtlas();
-                OpenGL.Utils.disp(textureAtlas.getGlId());
+                OpenGL.glBindTexture(OpenGL.GL11_GL_TEXTURE_2D, textureAtlas.getGlId());
                 Sprite icon = textureAtlas.getAtlasSprite("voxelmap:images/waypoints/target.png");
                 GuiSlotWaypoints.this.drawTexturedModalRect(x1, y1, icon, 16, 16);
             }
