@@ -53,7 +53,7 @@ public class CompressibleGLBufferedImage {
         int currentIndex = this.index;
         this.index = 0;
         if (currentIndex != 0 && RenderSystem.isOnRenderThreadOrInit()) {
-            OpenGL.glDeleteTexture(currentIndex);
+            RenderSystem.deleteTexture(currentIndex);
         }
 
     }

@@ -1237,7 +1237,7 @@ public class Radar implements IRadar {
         matrixStack.translate(0.0, 0.0, -3000.0 + captureDepth);
         RenderSystem.applyModelViewMatrix();
         OpenGL.Utils.bindFramebuffer();
-        OpenGL.glDepthMask(true);
+        RenderSystem.depthMask(true);
         OpenGL.glEnable(OpenGL.GL11_GL_DEPTH_TEST);
         OpenGL.glEnable(OpenGL.GL11_GL_BLEND);
         OpenGL.glDisable(OpenGL.GL11_GL_CULL_FACE);
@@ -1307,7 +1307,7 @@ public class Radar implements IRadar {
         RenderSystem.applyModelViewMatrix();
         OpenGL.glEnable(OpenGL.GL11_GL_CULL_FACE);
         OpenGL.glDisable(OpenGL.GL11_GL_DEPTH_TEST);
-        OpenGL.glDepthMask(false);
+        RenderSystem.depthMask(false);
         OpenGL.Utils.unbindFramebuffer();
         RenderSystem.setProjectionMatrix(minimapProjectionMatrix, VertexSorter.BY_DISTANCE);
         OpenGL.glViewport(0, 0, VoxelConstants.getMinecraft().getWindow().getFramebufferWidth(), VoxelConstants.getMinecraft().getWindow().getFramebufferHeight());

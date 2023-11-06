@@ -704,7 +704,7 @@ public class Map implements Runnable, IChangeObserver {
             this.showCoords(drawContext, mapX, mapY);
         }
 
-        OpenGL.glDepthMask(true);
+        RenderSystem.depthMask(true);
         OpenGL.glEnable(OpenGL.GL11_GL_DEPTH_TEST);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         modelViewMatrixStack.pop();
@@ -722,7 +722,7 @@ public class Map implements Runnable, IChangeObserver {
             this.drawWelcomeScreen(drawContext, VoxelConstants.getMinecraft().getWindow().getScaledWidth(), VoxelConstants.getMinecraft().getWindow().getScaledHeight());
         }
 
-        OpenGL.glDepthMask(true);
+        RenderSystem.depthMask(true);
         OpenGL.glEnable(OpenGL.GL11_GL_DEPTH_TEST);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         OpenGL.glTexParameteri(OpenGL.GL11_GL_TEXTURE_2D, OpenGL.GL11_GL_TEXTURE_MIN_FILTER, OpenGL.GL11_GL_NEAREST);
@@ -1554,7 +1554,7 @@ public class Map implements Runnable, IChangeObserver {
         matrixStack.loadIdentity();
         matrixStack.translate(0.0, 0.0, -2000.0);
         RenderSystem.applyModelViewMatrix();
-        OpenGL.glDepthMask(false);
+        RenderSystem.depthMask(false);
         OpenGL.glDisable(OpenGL.GL11_GL_DEPTH_TEST);
         RenderSystem.clearColor(0.0F, 0.0F, 0.0F, 0.0F);
         RenderSystem.clear(OpenGL.GL11_GL_COLOR_BUFFER_BIT, false);
@@ -1605,7 +1605,7 @@ public class Map implements Runnable, IChangeObserver {
         OpenGL.Utils.drawPost();
         matrixStack.pop();
         RenderSystem.applyModelViewMatrix();
-        OpenGL.glDepthMask(true);
+        RenderSystem.depthMask(true);
         OpenGL.glEnable(OpenGL.GL11_GL_DEPTH_TEST);
         OpenGL.Utils.unbindFramebuffer();
         OpenGL.glViewport(0, 0, VoxelConstants.getMinecraft().getWindow().getFramebufferWidth(), VoxelConstants.getMinecraft().getWindow().getFramebufferHeight());

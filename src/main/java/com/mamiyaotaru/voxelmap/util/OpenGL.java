@@ -90,7 +90,7 @@ public final class OpenGL {
             case GL11_GL_CULL_FACE -> RenderSystem.enableCull();
             case GL11_GL_DEPTH_TEST -> RenderSystem.enableDepthTest();
             case GL11_GL_BLEND -> RenderSystem.enableBlend();
-            case GL11_GL_SCISSOR_TEST -> GL11.glEnable(GL11_GL_SCISSOR_TEST);
+            case GL11_GL_SCISSOR_TEST -> GlStateManager._enableScissorTest();
             case GL11_GL_POLYGON_OFFSET_FILL -> RenderSystem.enablePolygonOffset();
             default -> VoxelConstants.getLogger().warn("OpenGL - Invalid state received by Enable (" + target + ")");
         }
@@ -101,16 +101,12 @@ public final class OpenGL {
             case GL11_GL_CULL_FACE -> RenderSystem.disableCull();
             case GL11_GL_DEPTH_TEST -> RenderSystem.disableDepthTest();
             case GL11_GL_BLEND -> RenderSystem.disableBlend();
-            case GL11_GL_SCISSOR_TEST -> GL11.glDisable(GL11.GL_SCISSOR_TEST);
+            case GL11_GL_SCISSOR_TEST -> RenderSystem.disableScissor();
             case GL11_GL_POLYGON_OFFSET_FILL -> RenderSystem.disablePolygonOffset();
             default -> VoxelConstants.getLogger().warn("OpenGL - Invalid state received by Disable (" + target + ")");
         }
     }
-
-    public static void glDeleteTexture(int texture) { RenderSystem.deleteTexture(texture); }
-
-    public static void glDepthMask(boolean mask) { RenderSystem.depthMask(mask); }
-
+    
     public static int glGenTextures() { return GlStateManager._genTexture(); }
 
     public static int glGetTexLevelParameteri(int target, int level, int pname) { return GlStateManager._getTexLevelParameter(target, level, pname); }
@@ -318,7 +314,7 @@ public final class OpenGL {
 
         public static void drawPost() { TESSELLATOR.draw(); }
 
-        public static void glah(int g) { glDeleteTexture(g); }
+        public static void glah(int g) { RenderSystem.deleteTexture(g); }
 
         public static void ldrawone(int x, int y, double z, float u, float v) { VERTEX_BUFFER.vertex(x, y, z).texture(u, v).next(); }
 
