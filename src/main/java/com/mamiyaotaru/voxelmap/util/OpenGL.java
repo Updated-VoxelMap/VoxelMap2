@@ -92,12 +92,6 @@ public final class OpenGL {
 
     public static void glPushAttrib(int mask) { GL11.glPushAttrib(mask); }
 
-    public static void glScissor(int x, int y, int width, int height) { GL11.glScissor(x, y, width, height); }
-
-    public static void glTexImage2D(int target, int level, int internalformat, int width, int height, int border, int format, int type, ByteBuffer pixels) { GL11.glTexImage2D(target, level, internalformat, width, height, border, format, type, pixels); }
-
-    public static void glTexSubImage2D(int target, int level, int xoffset, int yoffset, int width, int height, int format, int type, IntBuffer pixels) { GL11.glTexSubImage2D(target, level, xoffset, yoffset, width, height, format, type, pixels); }
-
     public static final class Utils {
         public static final Tessellator TESSELLATOR = Tessellator.getInstance();
         public static final BufferBuilder VERTEX_BUFFER = TESSELLATOR.getBuffer();
@@ -127,7 +121,7 @@ public final class OpenGL {
             GlStateManager._texParameter(GL11_GL_TEXTURE_2D, GL11_GL_TEXTURE_WRAP_T, GL12_GL_CLAMP_TO_EDGE);
             GlStateManager._texParameter(GL11_GL_TEXTURE_2D, GL11_GL_TEXTURE_MIN_FILTER, GL11_GL_LINEAR);
             GlStateManager._texParameter(GL11_GL_TEXTURE_2D, GL11_GL_TEXTURE_MAG_FILTER, GL11_GL_LINEAR);
-            glTexImage2D(GL11_GL_TEXTURE_2D, 0, GL11_GL_RGBA, width, height, 0, GL11_GL_RGBA, GL11_GL_BYTE, buffer);
+            GlStateManager._texImage2D(GL11_GL_TEXTURE_2D, 0, GL11_GL_RGBA, width, height, 0, GL11_GL_RGBA, GL11_GL_BYTE, buffer.asIntBuffer());
             GlStateManager._glFramebufferTexture2D(GL30_GL_FRAMEBUFFER, GL30_GL_COLOR_ATTACHMENT0, GL11_GL_TEXTURE_2D, fboTextureId, 0);
 
             int rboId = GlStateManager.glGenRenderbuffers();

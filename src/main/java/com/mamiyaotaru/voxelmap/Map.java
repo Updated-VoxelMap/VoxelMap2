@@ -1618,7 +1618,7 @@ public class Map implements Runnable, IChangeObserver {
 
         double guiScale = (double) VoxelConstants.getMinecraft().getWindow().getFramebufferWidth() / this.scWidth;
         GlStateManager._enableScissorTest();
-        OpenGL.glScissor((int) (guiScale * (x - 32)), (int) (guiScale * ((this.scHeight - y) - 32.0)), (int) (guiScale * 64.0), (int) (guiScale * 63.0));
+        GlStateManager._scissorBox((int) (guiScale * (x - 32)), (int) (guiScale * ((this.scHeight - y) - 32.0)), (int) (guiScale * 64.0), (int) (guiScale * 63.0));
         OpenGL.Utils.drawPre();
         OpenGL.Utils.setMap(x, y, (int) (128f * scale));
         OpenGL.Utils.drawPost();

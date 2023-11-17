@@ -118,7 +118,7 @@ public final class TextureUtilLegacy {
             rowsToCopy = Math.min(maxRows, height - rowsCopied);
             int sizeOfCopy = width * rowsToCopy;
             copyToBufferPos(imageData, pos, sizeOfCopy);
-            OpenGL.glTexSubImage2D(OpenGL.GL11_GL_TEXTURE_2D, mipmapLevel, originX, originY + rowsCopied, width, rowsToCopy, OpenGL.GL12_GL_BGRA, OpenGL.GL12_GL_UNSIGNED_INT_8_8_8_8_REV, DATA_BUFFER);
+            GlStateManager._texImage2D(OpenGL.GL11_GL_TEXTURE_2D, mipmapLevel, originX, originY + rowsCopied, width, rowsToCopy, OpenGL.GL12_GL_BGRA, OpenGL.GL12_GL_UNSIGNED_INT_8_8_8_8_REV, DATA_BUFFER);
         }
 
     }
