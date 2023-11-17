@@ -7,6 +7,7 @@ import com.mamiyaotaru.voxelmap.util.DimensionManager;
 import com.mamiyaotaru.voxelmap.util.OpenGL;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.gui.widget.EntryListWidget;
 import net.minecraft.client.util.NarratorManager;
 import net.minecraft.text.Text;
@@ -60,6 +61,9 @@ class GuiSlotDimensions extends GuiSlotMinimap {
     protected boolean isSelectedEntry(int index) {
         return this.dimensions.get(index).dim.equals(this.parentGui.selectedDimension);
     }
+
+    @Override
+    protected void appendClickableNarrations(NarrationMessageBuilder builder) {}
 
     public class DimensionItem extends EntryListWidget.Entry<DimensionItem> {
         private final GuiAddWaypoint parentGui;

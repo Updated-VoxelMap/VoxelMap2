@@ -31,7 +31,7 @@ public class GuiButtonRowListPlayers extends EntryListWidget<GuiButtonRowListPla
     static final Text DENY = Text.translatable("gui.cancel");
 
     public GuiButtonRowListPlayers(GuiSelectPlayer par1GuiSelectPlayer) {
-        super(VoxelConstants.getMinecraft(), par1GuiSelectPlayer.getWidth(), par1GuiSelectPlayer.getHeight(), 89, par1GuiSelectPlayer.getHeight() - 65 + 4, 25);
+        super(VoxelConstants.getMinecraft(), par1GuiSelectPlayer.getWidth(), par1GuiSelectPlayer.getHeight(), par1GuiSelectPlayer.getHeight() - 65 + 4, 25);
         this.parentGui = par1GuiSelectPlayer;
         ClientPlayNetworkHandler netHandlerPlayClient = VoxelConstants.getPlayer().networkHandler;
         this.players = new ArrayList<>(netHandlerPlayClient.getPlayerList());
@@ -111,8 +111,8 @@ public class GuiButtonRowListPlayers extends EntryListWidget<GuiButtonRowListPla
 
     }
 
-    public void appendNarrations(NarrationMessageBuilder builder) {
-    }
+    @Override
+    protected void appendClickableNarrations(NarrationMessageBuilder builder) {}
 
     public class Row extends EntryListWidget.Entry<Row> {
         private ButtonWidget button;
@@ -148,7 +148,7 @@ public class GuiButtonRowListPlayers extends EntryListWidget<GuiButtonRowListPla
                     this.drawIconForButton(drawContext, button, id);
                 }
 
-                if (button.isHovered() && mouseY >= GuiButtonRowListPlayers.this.top && mouseY <= GuiButtonRowListPlayers.this.bottom) {
+                if (button.isHovered() && mouseY >= GuiButtonRowListPlayers.this.getY() && mouseY <= GuiButtonRowListPlayers.this.getBottom()) {
                     Text tooltip = Text.translatable("minimap.waypointshare.sharewithname", button.getMessage());
                     GuiSelectPlayer.setTooltip(GuiButtonRowListPlayers.this.parentGui, tooltip);
                 }

@@ -25,7 +25,7 @@ public abstract class GuiSlotMinimap extends EntryListWidget {
     public boolean doubleclick;
 
     protected GuiSlotMinimap(int width, int height, int top, int bottom, int itemHeight) {
-        super (VoxelConstants.getMinecraft(), width, height, top, bottom, itemHeight);
+        super (VoxelConstants.getMinecraft(), width, height, bottom, itemHeight);
     }
 
     public void setShowTopBottomBG(boolean showTopBottomBG) { this.showTopBottomBG = showTopBottomBG; }
@@ -50,16 +50,16 @@ public abstract class GuiSlotMinimap extends EntryListWidget {
             float f = 32.0f;
 
             vertexBuffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE_COLOR);
-            vertexBuffer.vertex(left, bottom, 0.0).texture(left / f, (bottom + (int) getScrollAmount()) / f).color(32, 32, 32, 255).next();
-            vertexBuffer.vertex(right, bottom, 0.0).texture(right / f, (bottom + (int) getScrollAmount()) / f).color(32, 32, 32, 255).next();
-            vertexBuffer.vertex(right, top, 0.0).texture(right / f, (top + (int) getScrollAmount()) / f).color(32, 32, 32, 255).next();
-            vertexBuffer.vertex(left, top, 0.0).texture(left / f, (top + (int) getScrollAmount()) / f).color(32, 32, 32, 255).next();
+            vertexBuffer.vertex(this.getX(), this.getBottom(), 0.0).texture(this.getX() / f, (this.getBottom() + (int) getScrollAmount()) / f).color(32, 32, 32, 255).next();
+            vertexBuffer.vertex(this.getRight(), this.getBottom(), 0.0).texture(this.getRight() / f, (this.getBottom() + (int) getScrollAmount()) / f).color(32, 32, 32, 255).next();
+            vertexBuffer.vertex(this.getRight(), this.getY(), 0.0).texture(this.getRight() / f, (this.getY() + (int) getScrollAmount()) / f).color(32, 32, 32, 255).next();
+            vertexBuffer.vertex(this.getX(), this.getY(), 0.0).texture(this.getX() / f, (this.getY() + (int) getScrollAmount()) / f).color(32, 32, 32, 255).next();
 
             tessellator.draw();
         }
 
-        int leftEdge = left + width / 2 - getRowWidth() / 2 + 2;
-        int topOfListYPos = top + 4 - (int) getScrollAmount();
+        int leftEdge = this.getX() + width / 2 - getRowWidth() / 2 + 2;
+        int topOfListYPos = this.getY() + 4 - (int) getScrollAmount();
 
         if (this.hasListHeader) renderHeader(drawContext, leftEdge, topOfListYPos);
 
@@ -75,14 +75,14 @@ public abstract class GuiSlotMinimap extends EntryListWidget {
             RenderSystem.depthFunc(OpenGL.GL11_GL_ALWAYS);
 
             vertexBuffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE_COLOR);
-            vertexBuffer.vertex(left, top, -100.0).texture(0.0F, top / 32.0F).color(64, 64, 64, 255).next();
-            vertexBuffer.vertex(left + width, top, -100.0).texture(width / 32.0F, top / 32.0F).color(64, 64, 64, 255).next();
-            vertexBuffer.vertex(left + width, 0.0, -100.0).texture(width / 32.0F, 0.0F).color(64, 64, 64, 255).next();
-            vertexBuffer.vertex(left, 0.0, -100.0).texture(0.0F, 0.0F).color(64, 64, 64, 255).next();
-            vertexBuffer.vertex(left, height, -100.0).texture(0.0F, height / 32.0F).color(64, 64, 64, 255).next();
-            vertexBuffer.vertex(left + width, height, -100.0).texture(width / 32.0F, height / 32.0F).color(64, 64, 64, 255).next();
-            vertexBuffer.vertex(left + width, bottom, -100.0).texture(width / 32.0F, bottom / 32.0F).color(64, 64, 64, 255).next();
-            vertexBuffer.vertex(left, bottom, -100.0).texture(0.0F, bottom / 32.0F).color(64, 64, 64, 255).next();
+            vertexBuffer.vertex(this.getX(), this.getY(), -100.0).texture(0.0F, this.getY() / 32.0F).color(64, 64, 64, 255).next();
+            vertexBuffer.vertex(this.getX() + width, this.getY(), -100.0).texture(width / 32.0F, this.getY() / 32.0F).color(64, 64, 64, 255).next();
+            vertexBuffer.vertex(this.getX() + width, 0.0, -100.0).texture(width / 32.0F, 0.0F).color(64, 64, 64, 255).next();
+            vertexBuffer.vertex(this.getX(), 0.0, -100.0).texture(0.0F, 0.0F).color(64, 64, 64, 255).next();
+            vertexBuffer.vertex(this.getX(), height, -100.0).texture(0.0F, height / 32.0F).color(64, 64, 64, 255).next();
+            vertexBuffer.vertex(this.getX() + width, height, -100.0).texture(width / 32.0F, height / 32.0F).color(64, 64, 64, 255).next();
+            vertexBuffer.vertex(this.getX() + width, this.getBottom(), -100.0).texture(width / 32.0F, this.getBottom() / 32.0F).color(64, 64, 64, 255).next();
+            vertexBuffer.vertex(this.getX(), this.getBottom(), -100.0).texture(0.0F, this.getBottom() / 32.0F).color(64, 64, 64, 255).next();
 
             tessellator.draw();
 
@@ -94,14 +94,14 @@ public abstract class GuiSlotMinimap extends EntryListWidget {
             RenderSystem.setShaderTexture(0, Screen.OPTIONS_BACKGROUND_TEXTURE);
 
             vertexBuffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE_COLOR);
-            vertexBuffer.vertex(left, top + topBottomFadeHeight, 0.0).texture(0.0F, 1.0F).color(0, 0, 0, 0).next();
-            vertexBuffer.vertex(right, top + topBottomFadeHeight, 0.0).texture(1.0F, 1.0F).color(0, 0, 0, 0).next();
-            vertexBuffer.vertex(right, top, 0.0).texture(1.0F, 0.0F).color(0, 0, 0, 255).next();
-            vertexBuffer.vertex(left, top, 0.0).texture(0.0F, 0.0F).color(0, 0, 0, 255).next();
-            vertexBuffer.vertex(left, bottom, 0.0).texture(0.0F, 1.0F).color(0, 0, 0, 255).next();
-            vertexBuffer.vertex(right, bottom, 0.0).texture(1.0F, 1.0F).color(0, 0, 0, 255).next();
-            vertexBuffer.vertex(right, bottom - topBottomFadeHeight, 0.0).texture(1.0F, 0.0F).color(0, 0, 0, 0).next();
-            vertexBuffer.vertex(left, bottom - topBottomFadeHeight, 0.0).texture(0.0F, 0.0F).color(0, 0, 0, 0).next();
+            vertexBuffer.vertex(this.getX(), this.getY() + topBottomFadeHeight, 0.0).texture(0.0F, 1.0F).color(0, 0, 0, 0).next();
+            vertexBuffer.vertex(this.getRight(), this.getY() + topBottomFadeHeight, 0.0).texture(1.0F, 1.0F).color(0, 0, 0, 0).next();
+            vertexBuffer.vertex(this.getRight(), this.getY(), 0.0).texture(1.0F, 0.0F).color(0, 0, 0, 255).next();
+            vertexBuffer.vertex(this.getX(), this.getY(), 0.0).texture(0.0F, 0.0F).color(0, 0, 0, 255).next();
+            vertexBuffer.vertex(this.getX(), this.getBottom(), 0.0).texture(0.0F, 1.0F).color(0, 0, 0, 255).next();
+            vertexBuffer.vertex(this.getRight(), this.getBottom(), 0.0).texture(1.0F, 1.0F).color(0, 0, 0, 255).next();
+            vertexBuffer.vertex(this.getRight(), this.getBottom() - topBottomFadeHeight, 0.0).texture(1.0F, 0.0F).color(0, 0, 0, 0).next();
+            vertexBuffer.vertex(this.getX(), this.getBottom() - topBottomFadeHeight, 0.0).texture(0.0F, 0.0F).color(0, 0, 0, 0).next();
 
             tessellator.draw();
         }
@@ -111,16 +111,16 @@ public abstract class GuiSlotMinimap extends EntryListWidget {
         if (maxScroll > 0) {
             RenderSystem.setShader(GameRenderer::getPositionColorProgram);
 
-            int k1 = MathHelper.clamp((bottom - top) * (bottom - top) / getMaxPosition(), 32, bottom - top - 8);
-            int l1 = (int) getScrollAmount() * (bottom - top - k1) / maxScroll + top;
+            int k1 = MathHelper.clamp((this.getBottom() - this.getY()) * (this.getBottom() - this.getY()) / getMaxPosition(), 32, this.getBottom() - this.getY() - 8);
+            int l1 = (int) getScrollAmount() * (this.getBottom() - this.getY() - k1) / maxScroll + this.getY();
 
-            if (l1 < top) l1 = top;
+            if (l1 < this.getY()) l1 = this.getY();
 
             vertexBuffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
-            vertexBuffer.vertex(scrollBarLeft, bottom, 0.0).color(0, 0, 0, 255).next();
-            vertexBuffer.vertex(scrollBarRight, bottom, 0.0).color(0, 0, 0, 255).next();
-            vertexBuffer.vertex(scrollBarRight, top, 0.0).color(0, 0, 0, 255).next();
-            vertexBuffer.vertex(scrollBarLeft, top, 0.0).color(0, 0, 0, 255).next();
+            vertexBuffer.vertex(scrollBarLeft, this.getBottom(), 0.0).color(0, 0, 0, 255).next();
+            vertexBuffer.vertex(scrollBarRight, this.getBottom(), 0.0).color(0, 0, 0, 255).next();
+            vertexBuffer.vertex(scrollBarRight, this.getY(), 0.0).color(0, 0, 0, 255).next();
+            vertexBuffer.vertex(scrollBarLeft, this.getY(), 0.0).color(0, 0, 0, 255).next();
             vertexBuffer.vertex(scrollBarLeft, l1 + k1, 0.0).color(128, 128, 128, 255).next();
             vertexBuffer.vertex(scrollBarRight, l1 + k1, 0.0).color(128, 128, 128, 255).next();
             vertexBuffer.vertex(scrollBarRight, l1, 0.0).color(128, 128, 128, 255).next();
@@ -142,11 +142,10 @@ public abstract class GuiSlotMinimap extends EntryListWidget {
 
     public void setSlotWidth(int slotWidth) { this.slotWidth = slotWidth; }
 
-    protected int getScrollbarPositionX() { return slotWidth >= 220 ? width / 2 + 124 : right - 6; }
+    protected int getScrollbarPositionX() { return slotWidth >= 220 ? width / 2 + 124 : this.getRight() - 6; }
 
     public void setLeftPos(int left) {
-        this.left = left;
-        this.right = left + width;
+        this.setX(left);
     }
 
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
@@ -154,6 +153,4 @@ public abstract class GuiSlotMinimap extends EntryListWidget {
         this.lastClicked = System.currentTimeMillis();
         return super.mouseClicked(mouseX, mouseY, button);
     }
-
-    public void appendNarrations(NarrationMessageBuilder builder) {}
 }

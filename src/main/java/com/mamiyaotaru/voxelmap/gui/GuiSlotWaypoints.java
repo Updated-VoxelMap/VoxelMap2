@@ -9,6 +9,7 @@ import com.mamiyaotaru.voxelmap.util.TextUtils;
 import com.mamiyaotaru.voxelmap.util.Waypoint;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.gui.widget.EntryListWidget;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.Tessellator;
@@ -123,6 +124,9 @@ class GuiSlotWaypoints extends GuiSlotMinimap {
         this.waypointsFiltered.forEach(x -> this.addEntry((Entry) x));
     }
 
+    @Override
+    protected void appendClickableNarrations(NarrationMessageBuilder builder) {}
+
     public class WaypointItem extends EntryListWidget.Entry<WaypointItem> implements Comparable<WaypointItem> {
         private final GuiWaypoints parentGui;
         private final Waypoint waypoint;
@@ -148,7 +152,7 @@ class GuiSlotWaypoints extends GuiSlotMinimap {
                     tooltip = Text.literal(tooltipText);
                 }
 
-                if (mouseX >= GuiSlotWaypoints.this.left && mouseX <= GuiSlotWaypoints.this.right && mouseY >= GuiSlotWaypoints.this.top && mouseY <= GuiSlotWaypoints.this.bottom) {
+                if (mouseX >= GuiSlotWaypoints.this.getX() && mouseX <= GuiSlotWaypoints.this.getRight() && mouseY >= GuiSlotWaypoints.this.getY() && mouseY <= GuiSlotWaypoints.this.getBottom()) {
                     GuiWaypoints.setTooltip(GuiSlotWaypoints.this.parentGui, tooltip);
                 }
             }

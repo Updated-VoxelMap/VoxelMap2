@@ -10,6 +10,7 @@ import com.mamiyaotaru.voxelmap.util.OpenGL;
 import com.mamiyaotaru.voxelmap.util.TextUtils;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.gui.widget.EntryListWidget;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.client.util.NarratorManager;
@@ -103,6 +104,9 @@ class GuiSlotMobs extends GuiSlotMinimap {
 
         this.mobsFiltered.forEach(this::addEntry);
     }
+
+    @Override
+    protected void appendClickableNarrations(NarrationMessageBuilder builder) {}
 
     public class MobItem extends EntryListWidget.Entry<MobItem> {
         private final GuiMobs parentGui;
