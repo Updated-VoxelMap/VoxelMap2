@@ -78,7 +78,7 @@ public class BlockRepository {
         acaciaLeaves = Blocks.ACACIA_LEAVES;
         darkOakLeaves = Blocks.DARK_OAK_LEAVES;
         mangroveLeaves = Blocks.MANGROVE_LEAVES;
-        grass = Blocks.GRASS;
+        grass = Blocks.SHORT_GRASS;
         fern = Blocks.FERN;
         tallGrass = Blocks.TALL_GRASS;
         largeFern = Blocks.LARGE_FERN;
