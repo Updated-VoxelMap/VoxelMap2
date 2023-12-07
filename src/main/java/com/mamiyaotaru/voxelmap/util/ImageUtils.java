@@ -8,6 +8,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 import org.joml.Matrix4f;
 import org.lwjgl.BufferUtils;
+import org.lwjgl.system.MemoryUtil;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -35,7 +36,7 @@ public class ImageUtils {
             int numPixels = destWidth * destHeight;
             IntBuffer pixelBuffer = BufferUtils.createIntBuffer(numPixels);
             int[] pixelArray = new int[numPixels];
-            OpenGL.glGetTexImage(OpenGL.GL11_GL_TEXTURE_2D, mipmapLevel, OpenGL.GL12_GL_BGRA, OpenGL.GL12_GL_UNSIGNED_INT_8_8_8_8_REV, pixelBuffer);
+            GlStateManager._getTexImage(OpenGL.GL11_GL_TEXTURE_2D, mipmapLevel, OpenGL.GL12_GL_BGRA, OpenGL.GL12_GL_UNSIGNED_INT_8_8_8_8_REV, MemoryUtil.memAddress(pixelBuffer));
             pixelBuffer.get(pixelArray);
             BufferedImage bufferedImage = new BufferedImage(destWidth, destHeight, 2);
             bufferedImage.setRGB(0, 0, destWidth, destHeight, pixelArray, 0, destWidth);
@@ -94,7 +95,7 @@ public class ImageUtils {
         if (size < 2147483647L) {
             image = new BufferedImage(imageWidth, imageHeight, 6);
             ByteBuffer byteBuffer = ByteBuffer.allocateDirect(imageWidth * imageHeight * 4).order(ByteOrder.nativeOrder());
-            OpenGL.glGetTexImage(OpenGL.GL11_GL_TEXTURE_2D, 0, OpenGL.GL11_GL_RGBA, OpenGL.GL11_GL_UNSIGNED_BYTE, byteBuffer);
+            GlStateManager._getTexImage(OpenGL.GL11_GL_TEXTURE_2D, 0, OpenGL.GL11_GL_RGBA, OpenGL.GL11_GL_UNSIGNED_BYTE, MemoryUtil.memAddress(byteBuffer));
             byteBuffer.position(0);
             byte[] bytes = new byte[byteBuffer.remaining()];
             byteBuffer.get(bytes);
@@ -121,7 +122,6 @@ public class ImageUtils {
             int fboHeight = 512;
             ByteBuffer byteBuffer = ByteBuffer.allocateDirect(fboWidth * fboHeight * 4).order(ByteOrder.nativeOrder());
             byte[] bytes = new byte[byteBuffer.remaining()];
-            OpenGL.glPushAttrib(OpenGL.GL11_GL_TRANSFORM_BIT);
             RenderSystem.backupProjectionMatrix();
             RenderSystem.viewport(0, 0, fboWidth, fboHeight);
             Matrix4f matrix4f = new Matrix4f().ortho(fboWidth, (-(fboHeight)), 1000.0F, 3000.0F, -1.0f, 1.0f);
@@ -143,7 +143,7 @@ public class ImageUtils {
                     OpenGL.Utils.drawPost();
                     RenderSystem.bindTexture(OpenGL.Utils.fboTextureId);
                     byteBuffer.position(0);
-                    OpenGL.glGetTexImage(OpenGL.GL11_GL_TEXTURE_2D, 0, OpenGL.GL11_GL_RGBA, OpenGL.GL11_GL_UNSIGNED_BYTE, byteBuffer);
+                    GlStateManager._getTexImage(OpenGL.GL11_GL_TEXTURE_2D, 0, OpenGL.GL11_GL_RGBA, OpenGL.GL11_GL_UNSIGNED_BYTE, MemoryUtil.memAddress(byteBuffer));
                     byteBuffer.position(0);
                     byteBuffer.get(bytes);
 
@@ -163,7 +163,6 @@ public class ImageUtils {
 
             OpenGL.Utils.unbindFramebuffer();
             RenderSystem.restoreProjectionMatrix();
-            OpenGL.glPopAttrib();
             RenderSystem.viewport(0, 0, VoxelConstants.getMinecraft().getWindow().getFramebufferWidth(), VoxelConstants.getMinecraft().getWindow().getFramebufferHeight());
         }
         return image;

@@ -16,12 +16,10 @@ import net.minecraft.client.util.GlAllocationUtils;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
 
-import java.awt.image.*;
+import java.awt.image.BufferedImage;
 import java.nio.ByteBuffer;
-import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
 public final class OpenGL {
@@ -32,7 +30,6 @@ public final class OpenGL {
             GL11_GL_SRC_ALPHA            = 0x302,
             GL11_GL_ONE_MINUS_SRC_ALPHA  = 0x303,
             GL11_GL_DST_COLOR            = 0x306,
-            GL11_GL_COLOR_CLEAR_VALUE    = 0xC22,
             GL11_GL_UNPACK_ROW_LENGTH    = 0xCF2,
             GL11_GL_UNPACK_SKIP_ROWS     = 0xCF3,
             GL11_GL_UNPACK_SKIP_PIXELS   = 0xCF4,
@@ -81,16 +78,6 @@ public final class OpenGL {
     private OpenGL() {}
 
     public static void glGenerateMipmap(int target) { GL30.glGenerateMipmap(target); }
-
-    public static void glGetFloatv(int pname, FloatBuffer params) { GL11.glGetFloatv(pname, params); }
-
-    public static void glGetTexImage(int tex, int level, int format, int type, ByteBuffer pixels) { GL11.glGetTexImage(tex, level, format, type, pixels); }
-
-    public static void glGetTexImage(int tex, int level, int format, int type, IntBuffer pixels) { GL11.glGetTexImage(tex, level, format, type, pixels); }
-
-    public static void glPopAttrib() { GL11.glPopAttrib(); }
-
-    public static void glPushAttrib(int mask) { GL11.glPushAttrib(mask); }
 
     public static final class Utils {
         public static final Tessellator TESSELLATOR = Tessellator.getInstance();
