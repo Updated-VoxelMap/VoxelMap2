@@ -124,9 +124,6 @@ class GuiSlotWaypoints extends GuiSlotMinimap {
         this.waypointsFiltered.forEach(x -> this.addEntry((Entry) x));
     }
 
-    @Override
-    protected void appendClickableNarrations(NarrationMessageBuilder builder) {}
-
     public class WaypointItem extends EntryListWidget.Entry<WaypointItem> implements Comparable<WaypointItem> {
         private final GuiWaypoints parentGui;
         private final Waypoint waypoint;

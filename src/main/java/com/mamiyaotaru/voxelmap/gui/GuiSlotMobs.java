@@ -105,9 +105,6 @@ class GuiSlotMobs extends GuiSlotMinimap {
         this.mobsFiltered.forEach(this::addEntry);
     }
 
-    @Override
-    protected void appendClickableNarrations(NarrationMessageBuilder builder) {}
-
     public class MobItem extends EntryListWidget.Entry<MobItem> {
         private final GuiMobs parentGui;
         private final String id;

@@ -62,9 +62,6 @@ class GuiSlotDimensions extends GuiSlotMinimap {
         return this.dimensions.get(index).dim.equals(this.parentGui.selectedDimension);
     }
 
-    @Override
-    protected void appendClickableNarrations(NarrationMessageBuilder builder) {}
-
     public class DimensionItem extends EntryListWidget.Entry<DimensionItem> {
         private final GuiAddWaypoint parentGui;
         private final DimensionContainer dim;
