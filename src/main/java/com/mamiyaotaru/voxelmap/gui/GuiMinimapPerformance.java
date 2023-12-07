@@ -10,7 +10,6 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.resource.language.I18n;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 
 public class GuiMinimapPerformance extends GuiScreenMinimap {
@@ -149,9 +148,5 @@ public class GuiMinimapPerformance extends GuiScreenMinimap {
         this.renderInGameBackground(drawContext);
         drawContext.drawCenteredTextWithShadow(this.getFontRenderer(), this.screenTitle, this.getWidth() / 2, 20, 16777215);
         super.render(drawContext, mouseX, mouseY, delta);
-    }
-
-    public void tick() {
-        this.worldSeedButton.tick();
     }
 }

@@ -1,7 +1,6 @@
 package com.mamiyaotaru.voxelmap.gui.overridden;
 
 import com.mamiyaotaru.voxelmap.VoxelConstants;
-import com.mamiyaotaru.voxelmap.persistent.GuiPersistentMap;
 import com.mamiyaotaru.voxelmap.util.OpenGL;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.DrawContext;
@@ -13,7 +12,6 @@ import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.VertexFormat;
 import net.minecraft.client.render.VertexFormats;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.MathHelper;
 
 public abstract class GuiSlotMinimap extends EntryListWidget {
@@ -33,8 +31,6 @@ public abstract class GuiSlotMinimap extends EntryListWidget {
     public void setShowSlotBG(boolean showSlotBG) { this.showSlotBG = showSlotBG; }
 
     public void render(DrawContext drawContext, int mouseX, int mouseY, float delta) {
-        //FIXME 1.20.2 renderBackground(drawContext); ?? renderInGameBackground
-
         int scrollBarLeft = getScrollbarPositionX();
         int scrollBarRight = scrollBarLeft + 6;
 
@@ -153,4 +149,6 @@ public abstract class GuiSlotMinimap extends EntryListWidget {
         this.lastClicked = System.currentTimeMillis();
         return super.mouseClicked(mouseX, mouseY, button);
     }
+
+    public void appendClickableNarrations(NarrationMessageBuilder builder) {}
 }

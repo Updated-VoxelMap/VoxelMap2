@@ -4,7 +4,6 @@ import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 
 public class GuiButtonText extends ButtonWidget {
@@ -55,10 +54,6 @@ public class GuiButtonText extends ButtonWidget {
     }
 
     public boolean isEditing() { return editing; }
-
-    public void tick() {
-        //textField.setFocused(true);
-    }
 
     public void setText(String text) { textField.setText(text); }
 

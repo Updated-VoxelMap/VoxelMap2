@@ -112,7 +112,7 @@ public class GuiButtonRowListPlayers extends EntryListWidget<GuiButtonRowListPla
     }
 
     @Override
-    protected void appendClickableNarrations(NarrationMessageBuilder builder) {}
+    public void appendClickableNarrations(NarrationMessageBuilder builder) {}
 
     public class Row extends EntryListWidget.Entry<Row> {
         private ButtonWidget button;
