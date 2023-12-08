@@ -3,6 +3,7 @@ package com.mamiyaotaru.voxelmap.gui.overridden;
 import com.mamiyaotaru.voxelmap.MapSettingsManager;
 import com.mamiyaotaru.voxelmap.VoxelConstants;
 import com.mamiyaotaru.voxelmap.util.OpenGL;
+import com.mojang.blaze3d.platform.GlConst;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
@@ -26,7 +27,7 @@ public class GuiScreenMinimap extends Screen {
         if (VoxelConstants.getVoxelMapInstance().getMapOptions().showUnderMenus) return;
 
         VoxelConstants.getVoxelMapInstance().getMap().drawMinimap(drawContext);
-        RenderSystem.clear(OpenGL.GL11_GL_DEPTH_BUFFER_BIT, false);
+        RenderSystem.clear(GlConst.GL_DEPTH_BUFFER_BIT, false);
     }
 
     public void removed() { MapSettingsManager.instance.saveAll(); }

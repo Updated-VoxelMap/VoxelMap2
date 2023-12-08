@@ -1,6 +1,7 @@
 package com.mamiyaotaru.voxelmap.util;
 
 import com.mamiyaotaru.voxelmap.VoxelConstants;
+import com.mojang.blaze3d.platform.GlConst;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.systems.VertexSorter;
@@ -26,8 +27,8 @@ import java.util.Arrays;
 public class ImageUtils {
     public static void saveImage(String name, int glid, int maxMipmapLevel, int width, int height) {
         RenderSystem.bindTexture(glid);
-        RenderSystem.pixelStore(OpenGL.GL11_GL_PACK_ALIGNMENT, 1);
-        RenderSystem.pixelStore(OpenGL.GL11_GL_UNPACK_ALIGNMENT, 1);
+        RenderSystem.pixelStore(GlConst.GL_PACK_ALIGNMENT, 1);
+        RenderSystem.pixelStore(GlConst.GL_UNPACK_ALIGNMENT, 1);
 
         for (int mipmapLevel = 0; mipmapLevel <= maxMipmapLevel; ++mipmapLevel) {
             File file = new File(name + "_" + mipmapLevel + ".png");
@@ -36,7 +37,7 @@ public class ImageUtils {
             int numPixels = destWidth * destHeight;
             IntBuffer pixelBuffer = BufferUtils.createIntBuffer(numPixels);
             int[] pixelArray = new int[numPixels];
-            GlStateManager._getTexImage(OpenGL.GL11_GL_TEXTURE_2D, mipmapLevel, OpenGL.GL12_GL_BGRA, OpenGL.GL12_GL_UNSIGNED_INT_8_8_8_8_REV, MemoryUtil.memAddress(pixelBuffer));
+            GlStateManager._getTexImage(GlConst.GL_TEXTURE_2D, mipmapLevel, OpenGL.GL_BGRA, OpenGL.GL_UNSIGNED_INT_8_8_8_8_REV, MemoryUtil.memAddress(pixelBuffer));
             pixelBuffer.get(pixelArray);
             BufferedImage bufferedImage = new BufferedImage(destWidth, destHeight, 2);
             bufferedImage.setRGB(0, 0, destWidth, destHeight, pixelArray, 0, destWidth);
@@ -88,14 +89,14 @@ public class ImageUtils {
     }
 
     public static BufferedImage createBufferedImageFromCurrentGLImage() {
-        int imageWidth = GlStateManager._getTexLevelParameter(OpenGL.GL11_GL_TEXTURE_2D, 0, OpenGL.GL11_GL_TRANSFORM_BIT);
-        int imageHeight = GlStateManager._getTexLevelParameter(OpenGL.GL11_GL_TEXTURE_2D, 0, OpenGL.GL11_GL_TEXTURE_HEIGHT);
+        int imageWidth = GlStateManager._getTexLevelParameter(GlConst.GL_TEXTURE_2D, 0, OpenGL.GL_TRANSFORM_BIT);
+        int imageHeight = GlStateManager._getTexLevelParameter(GlConst.GL_TEXTURE_2D, 0, OpenGL.GL_TEXTURE_HEIGHT);
         long size = (long) imageWidth * imageHeight * 4L;
         BufferedImage image;
         if (size < 2147483647L) {
             image = new BufferedImage(imageWidth, imageHeight, 6);
             ByteBuffer byteBuffer = ByteBuffer.allocateDirect(imageWidth * imageHeight * 4).order(ByteOrder.nativeOrder());
-            GlStateManager._getTexImage(OpenGL.GL11_GL_TEXTURE_2D, 0, OpenGL.GL11_GL_RGBA, OpenGL.GL11_GL_UNSIGNED_BYTE, MemoryUtil.memAddress(byteBuffer));
+            GlStateManager._getTexImage(GlConst.GL_TEXTURE_2D, 0, GlConst.GL_RGBA, GlConst.GL_UNSIGNED_BYTE, MemoryUtil.memAddress(byteBuffer));
             byteBuffer.position(0);
             byte[] bytes = new byte[byteBuffer.remaining()];
             byteBuffer.get(bytes);
@@ -116,7 +117,7 @@ public class ImageUtils {
                 imageHeight /= 2;
                 size = (long) imageWidth * imageHeight * 4L;
             }
-            int glid = GlStateManager._getInteger(OpenGL.GL11_GL_TEXTURE_BINDING_2D);
+            int glid = GlStateManager._getInteger(OpenGL.GL_TEXTURE_BINDING_2D);
             image = new BufferedImage(imageWidth, imageHeight, 6);
             int fboWidth = 512;
             int fboHeight = 512;
@@ -134,7 +135,7 @@ public class ImageUtils {
                 for (int startY = 0; startY + fboWidth < imageHeight; startY += fboHeight) {
                     RenderSystem.bindTexture(glid);
                     RenderSystem.clearColor(0.0F, 0.0F, 0.0F, 0.0F);
-                    RenderSystem.clear(OpenGL.GL11_GL_COLOR_BUFFER_BIT | OpenGL.GL11_GL_DEPTH_BUFFER_BIT, false);
+                    RenderSystem.clear(GlConst.GL_COLOR_BUFFER_BIT | GlConst.GL_DEPTH_BUFFER_BIT, false);
                     OpenGL.Utils.drawPre();
                     OpenGL.Utils.ldrawthree(0.0, fboHeight, 1.0, (float) startX / imageWidth, (float) startY / imageHeight);
                     OpenGL.Utils.ldrawthree(fboWidth, fboHeight, 1.0, ((float) startX + fboWidth) / imageWidth, (float) startY / imageHeight);
@@ -143,7 +144,7 @@ public class ImageUtils {
                     OpenGL.Utils.drawPost();
                     RenderSystem.bindTexture(OpenGL.Utils.fboTextureId);
                     byteBuffer.position(0);
-                    GlStateManager._getTexImage(OpenGL.GL11_GL_TEXTURE_2D, 0, OpenGL.GL11_GL_RGBA, OpenGL.GL11_GL_UNSIGNED_BYTE, MemoryUtil.memAddress(byteBuffer));
+                    GlStateManager._getTexImage(GlConst.GL_TEXTURE_2D, 0, GlConst.GL_RGBA, GlConst.GL_UNSIGNED_BYTE, MemoryUtil.memAddress(byteBuffer));
                     byteBuffer.position(0);
                     byteBuffer.get(bytes);
 

@@ -2,6 +2,7 @@ package com.mamiyaotaru.voxelmap.gui.overridden;
 
 import com.mamiyaotaru.voxelmap.VoxelConstants;
 import com.mamiyaotaru.voxelmap.util.OpenGL;
+import com.mojang.blaze3d.platform.GlConst;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
@@ -68,7 +69,7 @@ public abstract class GuiSlotMinimap extends EntryListWidget {
             RenderSystem.setShader(GameRenderer::getPositionTexColorProgram);
             RenderSystem.setShaderTexture(0, Screen.OPTIONS_BACKGROUND_TEXTURE);
             RenderSystem.enableDepthTest();
-            RenderSystem.depthFunc(OpenGL.GL11_GL_ALWAYS);
+            RenderSystem.depthFunc(GlConst.GL_ALWAYS);
 
             vertexBuffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE_COLOR);
             vertexBuffer.vertex(this.getX(), this.getY(), -100.0).texture(0.0F, this.getY() / 32.0F).color(64, 64, 64, 255).next();
@@ -82,10 +83,10 @@ public abstract class GuiSlotMinimap extends EntryListWidget {
 
             tessellator.draw();
 
-            RenderSystem.depthFunc(OpenGL.GL11_GL_LEQUAL);
+            RenderSystem.depthFunc(GlConst.GL_LEQUAL);
             RenderSystem.disableDepthTest();
             RenderSystem.enableBlend();
-            RenderSystem.blendFuncSeparate(OpenGL.GL11_GL_SRC_ALPHA, OpenGL.GL11_GL_ONE_MINUS_SRC_ALPHA, 0, 1);
+            RenderSystem.blendFuncSeparate(GlConst.GL_SRC_ALPHA, GlConst.GL_ONE_MINUS_SRC_ALPHA, 0, 1);
             RenderSystem.setShader(GameRenderer::getPositionTexColorProgram);
             RenderSystem.setShaderTexture(0, Screen.OPTIONS_BACKGROUND_TEXTURE);
 

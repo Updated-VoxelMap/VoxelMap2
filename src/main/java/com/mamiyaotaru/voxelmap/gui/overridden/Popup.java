@@ -2,6 +2,7 @@ package com.mamiyaotaru.voxelmap.gui.overridden;
 
 import com.mamiyaotaru.voxelmap.VoxelConstants;
 import com.mamiyaotaru.voxelmap.util.OpenGL;
+import com.mojang.blaze3d.platform.GlConst;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
@@ -104,7 +105,7 @@ public class Popup {
         vertexBuffer.vertex(this.x, this.y, 0.0).texture(this.x / var6, (this.y + this.h) / var6).color(64, 64, 64, 255).next();
         tessellator.draw();
         RenderSystem.enableBlend();
-        RenderSystem.blendFunc(OpenGL.GL11_GL_SRC_ALPHA, OpenGL.GL11_GL_ONE_MINUS_SRC_ALPHA);
+        RenderSystem.blendFunc(GlConst.GL_SRC_ALPHA, GlConst.GL_ONE_MINUS_SRC_ALPHA);
         RenderSystem.setShader(GameRenderer::getPositionColorProgram);
         vertexBuffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
         vertexBuffer.vertex(this.x, this.y + 4, 0.0).color(0, 0, 0, 0).next();

@@ -3,6 +3,7 @@ package com.mamiyaotaru.voxelmap.persistent;
 import com.mamiyaotaru.voxelmap.VoxelConstants;
 import com.mamiyaotaru.voxelmap.util.CompressionUtils;
 import com.mamiyaotaru.voxelmap.util.OpenGL;
+import com.mojang.blaze3d.platform.GlConst;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 
@@ -81,15 +82,15 @@ public class CompressibleGLBufferedImage {
 
         buffer.position(0).limit(this.bytes.length);
         RenderSystem.bindTexture(this.index);
-        RenderSystem.texParameter(OpenGL.GL11_GL_TEXTURE_2D, OpenGL.GL11_GL_TEXTURE_MIN_FILTER, OpenGL.GL11_GL_NEAREST);
-        RenderSystem.texParameter(OpenGL.GL11_GL_TEXTURE_2D, OpenGL.GL11_GL_TEXTURE_MAG_FILTER, OpenGL.GL11_GL_NEAREST);
-        RenderSystem.texParameter(OpenGL.GL11_GL_TEXTURE_2D, OpenGL.GL11_GL_TEXTURE_WRAP_S, OpenGL.GL12_GL_CLAMP_TO_EDGE);
-        RenderSystem.texParameter(OpenGL.GL11_GL_TEXTURE_2D, OpenGL.GL11_GL_TEXTURE_WRAP_T, OpenGL.GL12_GL_CLAMP_TO_EDGE);
-        RenderSystem.pixelStore(OpenGL.GL11_GL_UNPACK_ROW_LENGTH, 0);
-        RenderSystem.pixelStore(OpenGL.GL11_GL_UNPACK_SKIP_PIXELS, 0);
-        RenderSystem.pixelStore(OpenGL.GL11_GL_UNPACK_SKIP_ROWS, 0);
-        GlStateManager._texImage2D(OpenGL.GL11_GL_TEXTURE_2D, 0, OpenGL.GL11_GL_RGBA, this.getWidth(), this.getHeight(), 0, OpenGL.GL11_GL_RGBA, OpenGL.GL12_GL_UNSIGNED_INT_8_8_8_8, buffer.asIntBuffer());
-        OpenGL.glGenerateMipmap(OpenGL.GL11_GL_TEXTURE_2D);
+        RenderSystem.texParameter(GlConst.GL_TEXTURE_2D, GlConst.GL_TEXTURE_MIN_FILTER, GlConst.GL_NEAREST);
+        RenderSystem.texParameter(GlConst.GL_TEXTURE_2D, GlConst.GL_TEXTURE_MAG_FILTER, GlConst.GL_NEAREST);
+        RenderSystem.texParameter(GlConst.GL_TEXTURE_2D, GlConst.GL_TEXTURE_WRAP_S, GlConst.GL_CLAMP_TO_EDGE);
+        RenderSystem.texParameter(GlConst.GL_TEXTURE_2D, GlConst.GL_TEXTURE_WRAP_T, GlConst.GL_CLAMP_TO_EDGE);
+        RenderSystem.pixelStore(GlConst.GL_UNPACK_ROW_LENGTH, 0);
+        RenderSystem.pixelStore(GlConst.GL_UNPACK_SKIP_PIXELS, 0);
+        RenderSystem.pixelStore(GlConst.GL_UNPACK_SKIP_ROWS, 0);
+        GlStateManager._texImage2D(GlConst.GL_TEXTURE_2D, 0, GlConst.GL_RGBA, this.getWidth(), this.getHeight(), 0, GlConst.GL_RGBA, OpenGL.GL_UNSIGNED_INT_8_8_8_8, buffer.asIntBuffer());
+        OpenGL.glGenerateMipmap(GlConst.GL_TEXTURE_2D);
         this.compress();
     }
 

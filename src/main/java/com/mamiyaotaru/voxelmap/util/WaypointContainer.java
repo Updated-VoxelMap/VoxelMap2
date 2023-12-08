@@ -4,6 +4,7 @@ import com.mamiyaotaru.voxelmap.MapSettingsManager;
 import com.mamiyaotaru.voxelmap.VoxelConstants;
 import com.mamiyaotaru.voxelmap.textures.Sprite;
 import com.mamiyaotaru.voxelmap.textures.TextureAtlas;
+import com.mojang.blaze3d.platform.GlConst;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.font.TextRenderer.TextLayerType;
@@ -64,7 +65,7 @@ public class WaypointContainer {
             RenderSystem.enableDepthTest();
             RenderSystem.depthMask(false);
             RenderSystem.enableBlend();
-            RenderSystem.blendFunc(OpenGL.GL11_GL_SRC_ALPHA, 1);
+            RenderSystem.blendFunc(GlConst.GL_SRC_ALPHA, 1);
             RenderSystem.setShader(GameRenderer::getPositionColorProgram);
             Matrix4f matrix4f = matrixStack.peek().getPositionMatrix();
 
@@ -86,7 +87,7 @@ public class WaypointContainer {
 
         if (this.options.showWaypoints && signs) {
             RenderSystem.enableBlend();
-            RenderSystem.blendFuncSeparate(OpenGL.GL11_GL_SRC_ALPHA, OpenGL.GL11_GL_ONE_MINUS_SRC_ALPHA, 1, OpenGL.GL11_GL_ONE_MINUS_SRC_ALPHA);
+            RenderSystem.blendFuncSeparate(GlConst.GL_SRC_ALPHA, GlConst.GL_ONE_MINUS_SRC_ALPHA, 1, GlConst.GL_ONE_MINUS_SRC_ALPHA);
 
             for (Waypoint pt : this.wayPts) {
                 if (pt.isActive() || pt == this.highlightedWaypoint) {

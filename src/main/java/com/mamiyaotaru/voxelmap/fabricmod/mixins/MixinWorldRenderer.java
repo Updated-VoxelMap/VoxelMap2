@@ -3,6 +3,7 @@ package com.mamiyaotaru.voxelmap.fabricmod.mixins;
 import com.mamiyaotaru.voxelmap.VoxelConstants;
 import com.mamiyaotaru.voxelmap.fabricmod.FabricModVoxelMap;
 import com.mamiyaotaru.voxelmap.util.OpenGL;
+import com.mojang.blaze3d.platform.GlConst;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.gl.Framebuffer;
 import net.minecraft.client.render.Camera;
@@ -28,9 +29,9 @@ public class MixinWorldRenderer {
         if (VoxelConstants.getVoxelMapInstance().getMapOptions().showBeacons || VoxelConstants.getVoxelMapInstance().getMapOptions().showWaypoints) {
             if (VoxelConstants.isFabulousGraphicsOrBetter()) {
                 Framebuffer framebuffer = VoxelConstants.getMinecraft().getFramebuffer();
-                GlStateManager._glBindFramebuffer(OpenGL.GL30_GL_READ_FRAMEBUFFER, this.translucentFramebuffer.fbo);
-                GlStateManager._glBindFramebuffer(OpenGL.GL30_GL_DRAW_FRAMEBUFFER, framebuffer.fbo);
-                GlStateManager._glBlitFrameBuffer(0, 0, this.translucentFramebuffer.textureWidth, this.translucentFramebuffer.textureHeight, 0, 0, framebuffer.textureWidth, framebuffer.textureHeight, 256, OpenGL.GL11_GL_NEAREST);
+                GlStateManager._glBindFramebuffer(GlConst.GL_READ_FRAMEBUFFER, this.translucentFramebuffer.fbo);
+                GlStateManager._glBindFramebuffer(GlConst.GL_DRAW_FRAMEBUFFER, framebuffer.fbo);
+                GlStateManager._glBlitFrameBuffer(0, 0, this.translucentFramebuffer.textureWidth, this.translucentFramebuffer.textureHeight, 0, 0, framebuffer.textureWidth, framebuffer.textureHeight, 256, GlConst.GL_NEAREST);
             }
 
             boolean drawSignForeground = !VoxelConstants.isFabulousGraphicsOrBetter();
