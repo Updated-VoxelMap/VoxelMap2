@@ -90,7 +90,7 @@ public class CompressibleGLBufferedImage {
         RenderSystem.pixelStore(GlConst.GL_UNPACK_SKIP_PIXELS, 0);
         RenderSystem.pixelStore(GlConst.GL_UNPACK_SKIP_ROWS, 0);
         GlStateManager._texImage2D(GlConst.GL_TEXTURE_2D, 0, GlConst.GL_RGBA, this.getWidth(), this.getHeight(), 0, GlConst.GL_RGBA, OpenGL.GL_UNSIGNED_INT_8_8_8_8, buffer.asIntBuffer());
-        OpenGL.glGenerateMipmap(GlConst.GL_TEXTURE_2D);
+        OpenGL.generateMipmap();
         this.compress();
     }
 
