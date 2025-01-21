@@ -27,8 +27,6 @@ public final class VoxelConstants {
     private static final VoxelMap VOXELMAP_INSTANCE = new VoxelMap();
     private static int elapsedTicks;
     private static final ResourceLocation OPTIONS_BACKGROUND_TEXTURE = ResourceLocation.parse("textures/block/dirt.png");
-    private static final ResourceLocation OPTIONS_SEPARATOR_HEADER = ResourceLocation.parse("textures/gui/inworld_header_separator.png");
-    private static final ResourceLocation OPTIONS_SEPARATOR_FOOTER = ResourceLocation.parse("textures/gui/inworld_footer_separator.png");
     public static final boolean DEBUG = false;
     private static boolean initialized;
     private static Events events;
@@ -87,12 +85,6 @@ public final class VoxelConstants {
 
     public static ResourceLocation getOptionsBackgroundTexture() {
         return OPTIONS_BACKGROUND_TEXTURE;
-    }
-    public static ResourceLocation getOptionsSeparatorHeader() {
-        return OPTIONS_SEPARATOR_HEADER;
-    }
-    public static ResourceLocation getOptionsSeparatorFooter() {
-        return OPTIONS_SEPARATOR_FOOTER;
     }
 
     public static void lateInit() {

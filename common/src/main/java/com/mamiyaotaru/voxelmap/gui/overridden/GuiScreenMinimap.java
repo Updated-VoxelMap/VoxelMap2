@@ -38,8 +38,7 @@ public class GuiScreenMinimap extends Screen {
     }
 
     public void renderBackgroundTexture(GuiGraphics context) {
-        int color = ARGB.colorFromFloat(1.0F, 0.25F, 0.25F, 0.25F);
-        context.blit(RenderType::guiTextured, VoxelConstants.getOptionsBackgroundTexture(), 0, 0, 0.0F, 0.0F, 0, this.width, this.height, 32, 32, color);
-        context.flush();
+        this.renderBlurredBackground();
+        this.renderMenuBackground(context);
     }
 }

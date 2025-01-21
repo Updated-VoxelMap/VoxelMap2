@@ -267,8 +267,7 @@ public class GuiWaypoints extends GuiScreenMinimap implements IGuiWaypoints {
     }
 
     public void render(GuiGraphics drawContext, int mouseX, int mouseY, float delta) {
-        this.renderBlurredBackground();
-        this.renderMenuBackground(drawContext);
+        renderBackgroundTexture(drawContext);
         this.tooltip = null;
         this.waypointList.render(drawContext, mouseX, mouseY, delta);
         drawContext.drawCenteredString(this.getFontRenderer(), this.screenTitle, this.getWidth() / 2, 20, 16777215);
